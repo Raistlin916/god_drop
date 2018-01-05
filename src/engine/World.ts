@@ -10,6 +10,7 @@ export default class World {
   private entityManager: EntityManager = new EntityManager(this);
   private componentManager: ComponentManager = new ComponentManager(this);
   private teamManager: TeamManager = new TeamManager();
+  public totalFrames: Number
 
   public addSystem(system: System): this {
     this.systems.push(system);
@@ -37,7 +38,7 @@ export default class World {
     return this.teamManager;
   }
 
-  public process(delta: number): void {
+  public process(delta?: number): void {
     this.systems.forEach(system => {
       system.onBegin();
       this.entityManager.query(system.getAspect())
