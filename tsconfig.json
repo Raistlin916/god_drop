@@ -8,6 +8,10 @@
       "engine/*": [
         "./src/engine/*"
       ]
-    }
+    },
+    "lib": [
+      "es6",
+      "dom"
+    ]
   }
 }

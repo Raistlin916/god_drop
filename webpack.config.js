@@ -12,7 +12,10 @@ module.exports = {
     ]
   },
   resolve: {
-    extensions: ['.ts', '.js']
+    extensions: ['.ts', '.js'],
+    alias: {
+      'engine': path.resolve(__dirname, 'src/engine')
+    }
   },
   output: {
     filename: 'game.js',

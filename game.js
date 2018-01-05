@@ -60,7 +60,7 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 0);
+/******/ 	return __webpack_require__(__webpack_require__.s = 1);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -68,21 +68,40 @@
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__libs_symbol__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__libs_symbol___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__libs_symbol__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__libs_weapp_adapter__ = __webpack_require__(2);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__libs_weapp_adapter___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__libs_weapp_adapter__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__Game_index__ = __webpack_require__(3);
-
-
-
-var game = new __WEBPACK_IMPORTED_MODULE_2__Game_index__["a" /* default */]();
-console.log(5);
+var Component = /** @class */ (function () {
+    function Component() {
+    }
+    Object.defineProperty(Component.prototype, "className", {
+        get: function () {
+            return this.constructor.name;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    return Component;
+}());
+/* harmony default export */ __webpack_exports__["a"] = (Component);
 
 
 /***/ }),
 /* 1 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__libs_symbol__ = __webpack_require__(2);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__libs_symbol___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__libs_symbol__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__libs_weapp_adapter__ = __webpack_require__(3);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__libs_weapp_adapter___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__libs_weapp_adapter__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__Game_index__ = __webpack_require__(4);
+
+
+
+var game = new __WEBPACK_IMPORTED_MODULE_2__Game_index__["a" /* default */]();
+
+
+/***/ }),
+/* 2 */
 /***/ (function(module, exports) {
 
 /**
@@ -105,7 +124,7 @@ window.Symbol = Symbol
 
 
 /***/ }),
-/* 2 */
+/* 3 */
 /***/ (function(module, exports) {
 
 /******/ (function(modules) { // webpackBootstrap
@@ -1640,17 +1659,102 @@ window.Symbol = Symbol
 
 
 /***/ }),
-/* 3 */
+/* 4 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__components_index__ = __webpack_require__(5);
+var __assign = (this && this.__assign) || Object.assign || function(t) {
+    for (var s, i = 1, n = arguments.length; i < n; i++) {
+        s = arguments[i];
+        for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p))
+            t[p] = s[p];
+    }
+    return t;
+};
+
+var components = __assign({}, __WEBPACK_IMPORTED_MODULE_0__components_index__);
 var Game = /** @class */ (function () {
     function Game() {
-        console.log(3);
     }
     return Game;
 }());
 /* harmony default export */ __webpack_exports__["a"] = (Game);
+
+
+/***/ }),
+/* 5 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__Paint__ = __webpack_require__(6);
+/* empty harmony namespace reexport */
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__Position__ = __webpack_require__(7);
+/* empty harmony namespace reexport */
+
+
+
+
+/***/ }),
+/* 6 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_engine_Component__ = __webpack_require__(0);
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+
+var Paint = /** @class */ (function (_super) {
+    __extends(Paint, _super);
+    function Paint(type) {
+        var _this = _super.call(this) || this;
+        _this.type = type;
+        return _this;
+    }
+    return Paint;
+}(__WEBPACK_IMPORTED_MODULE_0_engine_Component__["a" /* default */]));
+/* unused harmony default export */ var _unused_webpack_default_export = (Paint);
+
+
+/***/ }),
+/* 7 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_engine_Component__ = __webpack_require__(0);
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+
+var Position = /** @class */ (function (_super) {
+    __extends(Position, _super);
+    function Position(x, y) {
+        var _this = _super.call(this) || this;
+        _this.x = 0;
+        _this.y = 0;
+        _this.x = x;
+        _this.y = y;
+        return _this;
+    }
+    return Position;
+}(__WEBPACK_IMPORTED_MODULE_0_engine_Component__["a" /* default */]));
+/* unused harmony default export */ var _unused_webpack_default_export = (Position);
 
 
 /***/ })
