@@ -1,0 +1,16 @@
+{
+  "name": "drop_game",
+  "version": "1.0.0",
+  "description": "",
+  "main": "game.js",
+  "devDependencies": {
+    "ts-loader": "^3.2.0",
+    "tslint": "^5.8.0",
+    "typescript": "^2.6.2"
+  },
+  "scripts": {
+    "dev": "webpack --progress --colors --watch"
+  },
+  "author": "",
+  "license": "ISC"
+}

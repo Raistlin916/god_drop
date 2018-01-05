@@ -3,7 +3,7 @@
  * 方便模拟私有变量
  */
 
-let Symbol  = window.Symbol
+let Symbol = window.Symbol
 let idCounter = 0
 
 if (!Symbol) {
