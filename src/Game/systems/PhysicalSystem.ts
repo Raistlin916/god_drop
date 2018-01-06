@@ -6,18 +6,18 @@ import Position from '../components/Position'
 import Physical from '../components/Physical'
 
 export default class PhysicalSystem extends System {
-  private positionMapper: ComponentMapper<Position>;
-  private physicalMapper: ComponentMapper<Physical>;
+  private positionMapper: ComponentMapper<Position>
+  private physicalMapper: ComponentMapper<Physical>
 
   constructor() {
-    super(Aspect.all(Position, Physical));
+    super(Aspect.all(Position, Physical))
   }
 
   process(entity: Entity): void {
-    const position = this.positionMapper.get(entity);
-    const physical = this.physicalMapper.get(entity);
+    const position = this.positionMapper.get(entity)
+    const physical = this.physicalMapper.get(entity)
 
-    position.x += physical.vx;
-    position.y += physical.vy;
+    position.x += physical.vx
+    position.y += physical.vy
   }
 }

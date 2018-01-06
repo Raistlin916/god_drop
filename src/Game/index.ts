@@ -3,6 +3,8 @@ import Component, { Components } from 'engine/Component'
 import * as com from './components/index'
 import RenderSystem from './systems/RenderSystem'
 import PhysicalSystem from './systems/PhysicalSystem'
+import WallSensorSystem from './systems/WallSensorSystem'
+import SpawnerSystem from './systems/SpawnerSystem'
 import entityFactory from './entityFactory'
 
 const components: Components = { ...com }
@@ -16,6 +18,8 @@ export default class Game {
     this.world = new World
     this.world.importComponents(components)
     this.world
+      .addSystem(new SpawnerSystem())
+      .addSystem(new WallSensorSystem())
       .addSystem(new PhysicalSystem())
       .addSystem(new RenderSystem(ctx))
 
@@ -27,6 +31,8 @@ export default class Game {
 
   private init() :void {
     entityFactory.createGod(this.world)
+
+    entityFactory.createItemSpawner(this.world)
   }
 
   public start() :void {

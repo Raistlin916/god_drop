@@ -14,16 +14,22 @@ export default class RenderSystem extends System {
   private positionMapper: ComponentMapper<Position>
   private boundMapper: ComponentMapper<Bound>
   private paintMapper: ComponentMapper<Paint>
+  private size: Bound
 
   constructor(ctx: CanvasRenderingContext2D) {
     super(Aspect.all(Position, Paint))
     this.ctx = ctx
     this.width = this.ctx.canvas.width
     this.height = this.ctx.canvas.height
+    this.size = new Bound(this.width, this.height)
+  }
+
+  public getSize(): Bound {
+    return this.size
   }
 
   public onBegin(): void {
-    this.ctx.fillStyle = '#eee'
+    this.ctx.fillStyle = '#fff'
     this.ctx.fillRect(0, 0, this.width, this.height)
   }
 
@@ -39,7 +45,14 @@ export default class RenderSystem extends System {
     const bound = this.boundMapper.get(entity)
 
     ctx.save()
-    ctx.drawImage(paint.img, position.x, position.y, bound.x2, bound.y2)
+    if (paint.imageRenderOptions) {
+      const { imageRenderOptions } = paint
+      ctx.drawImage(paint.img, imageRenderOptions.sx, imageRenderOptions.sy,
+        imageRenderOptions.sw, imageRenderOptions.sh, position.x, position.y, bound.x2, bound.y2)
+    } else {
+      ctx.drawImage(paint.img, position.x, position.y, bound.x2, bound.y2)
+    }
+
     ctx.restore()
   }
 }

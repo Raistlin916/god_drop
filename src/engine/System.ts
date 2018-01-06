@@ -47,7 +47,7 @@ export default abstract class System {
     const cm: ComponentManager = world.getComponentManager();
     const componentMappers = cm.getMappers();
     Object.keys(componentMappers).forEach(key => {
-      this[`${key.toLowerCase()}Mapper`] = componentMappers[key]
+      this[`${key.charAt(0).toLowerCase() + key.slice(1)}Mapper`] = componentMappers[key]
     });
     const systems: System[] = world.getSystems()
     systems.forEach(system => {
