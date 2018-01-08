@@ -1,8 +1,9 @@
 {
   "compilerOptions": {
     "target": "es5",
-    "module": "es6",
+    "module": "esnext",
     "sourceMap": false,
+    "outDir": "./build",
     "baseUrl": ".",
     "paths": {
       "engine/*": [
