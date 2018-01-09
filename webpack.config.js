@@ -6,7 +6,7 @@ module.exports = {
     rules: [
       {
         test: /\.ts$/,
-        use: 'ts-loader',
+        use: ['babel-loader', 'ts-loader'],
         exclude: /node_modules/
       }
     ]
@@ -18,8 +18,7 @@ module.exports = {
     }
   },
   output: {
-    filename: 'bundle.js',
-    path: path.resolve(__dirname, './build'),
-    libraryTarget: 'umd'
+    filename: 'game.js',
+    path: path.resolve(__dirname, '.')
   }
 };
