@@ -28,7 +28,7 @@ export default {
   },
   createItemSpawner(world: World): Entity {
     return world.createEntity()
-      .add(new Spawner('item', 120))
+      .add(new Spawner('item', 60))
       .getEntity()
   }
 }

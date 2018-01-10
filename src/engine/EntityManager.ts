@@ -22,6 +22,7 @@ export default class EntityManager {
     const index = this.entities.indexOf(entity)
     if (index > -1) {
       this.entities.splice(index, 1)
+      this.world.getTagManager().remove(entity)
     }
   }
 

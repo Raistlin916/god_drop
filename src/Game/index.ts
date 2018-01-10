@@ -5,6 +5,7 @@ import RenderSystem from './systems/RenderSystem'
 import PhysicalSystem from './systems/PhysicalSystem'
 import WallSensorSystem from './systems/WallSensorSystem'
 import SpawnerSystem from './systems/SpawnerSystem'
+import CollisionSystem from './systems/CollisionSystem'
 import entityFactory from './entityFactory'
 
 const components: Components = { ...com }
@@ -21,6 +22,7 @@ export default class Game {
       .addSystem(new SpawnerSystem())
       .addSystem(new WallSensorSystem())
       .addSystem(new PhysicalSystem())
+      .addSystem(new CollisionSystem())
       .addSystem(new RenderSystem(ctx))
 
     this.loop = this.loop.bind(this)
@@ -30,7 +32,8 @@ export default class Game {
   }
 
   private init() :void {
-    entityFactory.createGod(this.world)
+    const player = entityFactory.createGod(this.world)
+    this.world.getTagManager().addTeam('player', player)
 
     entityFactory.createItemSpawner(this.world)
   }

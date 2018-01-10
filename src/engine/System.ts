@@ -3,7 +3,7 @@ import Aspect from './Aspect';
 import World from './World';
 import EntityManager from './EntityManager';
 import ComponentManager from './ComponentManager';
-import TeamManager from './TeamManager';
+import TagManager from './TagManager';
 
 const lowerFirstLetter = (string: string): string => {
   return string.charAt(0).toLowerCase() + string.slice(1);
@@ -14,7 +14,7 @@ export default abstract class System {
   protected world: World;
   protected aspect: Aspect;
   protected entityManager: EntityManager;
-  protected teamManager: TeamManager;
+  protected tagManager: TagManager;
 
   constructor(aspect: Aspect) {
     this.aspect = aspect;
@@ -56,7 +56,7 @@ export default abstract class System {
     });
 
     this.entityManager = world.getEntityManager();
-    this.teamManager = world.getTeamManager();
+    this.tagManager = world.getTagManager();
     this.world = world;
   }
 

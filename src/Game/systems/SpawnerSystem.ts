@@ -15,7 +15,8 @@ export default class SpawnerSystem extends System {
     spawner.cooldown -= 1
     if (spawner.cooldown <= 0) {
       spawner.cooldown = spawner.originCooldown
-      entityFactory.createItem(this.world)
+      const item = entityFactory.createItem(this.world)
+      this.tagManager.addTeam('item', item)
     }
   }
 }

@@ -12,7 +12,7 @@ module.exports = {
     ]
   },
   resolve: {
-    extensions: ['.tsx', '.ts', '.js'],
+    extensions: ['.ts', '.js'],
     alias: {
       'engine': path.resolve(__dirname, './src/engine')
     }
