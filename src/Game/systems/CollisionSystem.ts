@@ -2,22 +2,29 @@ import System from 'engine/System'
 import Entity from 'engine/Entity'
 import Aspect from 'engine/Aspect'
 import ComponentMapper from 'engine/ComponentMapper'
-import { Bound, Position, Physical } from '../components/index'
+import { Bound, Position, Physical, Payload } from '../components/index'
 
 export default class CollisionSystem extends System {
   private positionMapper: ComponentMapper<Position>
   private physicalMapper: ComponentMapper<Physical>
   private boundMapper: ComponentMapper<Bound>
+  private payloadMapper: ComponentMapper<Payload>
 
   constructor() {
     super(Aspect.all(Position, Bound))
   }
 
   public process(entity: Entity): void {
-    const physical: Physical = this.physicalMapper.get(entity)
-    const position: Position = this.positionMapper.get(entity)
-    const bound: Bound = this.boundMapper.get(entity)
-
+    if (!this.tagManager.is(entity, 'player')) {
+      return
+    }
+    this.tagManager.getTeam('item').forEach((item: Entity) => {
+      if (this.overlap(item, entity)) {
+        this.entityManager.remove(item)
+        this.payloadMapper.get(entity).data.score += this.payloadMapper.get(item).data.bonus
+        console.log(this.payloadMapper.get(entity).data.score)
+      }
+    })
 
   }
 

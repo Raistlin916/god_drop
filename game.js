@@ -371,8 +371,6 @@ var Position = /** @class */function (_super) {
     __extends(Position, _super);
     function Position(x, y) {
         var _this = _super.call(this) || this;
-        _this.x = 0;
-        _this.y = 0;
         _this.x = x;
         _this.y = y;
         return _this;
@@ -422,7 +420,7 @@ module.exports = { "default": __webpack_require__(59), __esModule: true };
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.Spawner = exports.WallSensor = exports.Physical = exports.Bound = exports.Position = exports.Paint = undefined;
+exports.Payload = exports.Spawner = exports.WallSensor = exports.Physical = exports.Bound = exports.Position = exports.Paint = undefined;
 
 var _Paint = __webpack_require__(32);
 
@@ -448,6 +446,10 @@ var _Spawner = __webpack_require__(35);
 
 var _Spawner2 = _interopRequireDefault(_Spawner);
 
+var _Payload = __webpack_require__(78);
+
+var _Payload2 = _interopRequireDefault(_Payload);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 exports.Paint = _Paint2.default;
@@ -456,6 +458,7 @@ exports.Bound = _Bound2.default;
 exports.Physical = _Physical2.default;
 exports.WallSensor = _WallSensor2.default;
 exports.Spawner = _Spawner2.default;
+exports.Payload = _Payload2.default;
 
 /***/ }),
 /* 17 */
@@ -831,8 +834,6 @@ var Physical = /** @class */function (_super) {
             vy = 0;
         }
         var _this = _super.call(this) || this;
-        _this.vx = 0;
-        _this.vy = 0;
         _this.vx = vx;
         _this.vy = vy;
         return _this;
@@ -938,8 +939,8 @@ var Spawner = /** @class */function (_super) {
     __extends(Spawner, _super);
     function Spawner(type, cooldown) {
         var _this = _super.call(this) || this;
-        _this.originCooldown = cooldown;
         _this.type = type;
+        _this.originCooldown = cooldown;
         _this.cooldown = 0;
         return _this;
     }
@@ -962,7 +963,9 @@ var _index = __webpack_require__(16);
 
 exports.default = {
     createGod: function createGod(world) {
-        return world.createEntity().add(new _index.Position(canvas.width / 2, canvas.height / 2)).add(new _index.Bound(100, 113.5)).add(new _index.Paint('imgs/god.png')).getEntity();
+        return world.createEntity().add(new _index.Position(canvas.width / 2, canvas.height / 2)).add(new _index.Bound(100, 113.5)).add(new _index.Paint('imgs/god.png')).add(new _index.Payload({
+            score: 2
+        })).getEntity();
     },
     createItem: function createItem(world) {
         // const seed = Math.ceil(Math.random() * 20)
@@ -972,6 +975,8 @@ exports.default = {
             sy: 8,
             sw: 40,
             sh: 40
+        })).add(new _index.Payload({
+            bonus: 2
         })).getEntity();
     },
     createItemSpawner: function createItemSpawner(world) {
@@ -3664,9 +3669,17 @@ var CollisionSystem = /** @class */function (_super) {
         return _super.call(this, _Aspect2.default.all(_index.Position, _index.Bound)) || this;
     }
     CollisionSystem.prototype.process = function (entity) {
-        var physical = this.physicalMapper.get(entity);
-        var position = this.positionMapper.get(entity);
-        var bound = this.boundMapper.get(entity);
+        var _this = this;
+        if (!this.tagManager.is(entity, 'player')) {
+            return;
+        }
+        this.tagManager.getTeam('item').forEach(function (item) {
+            if (_this.overlap(item, entity)) {
+                _this.entityManager.remove(item);
+                _this.payloadMapper.get(entity).data.score += _this.payloadMapper.get(item).data.bonus;
+                console.log(_this.payloadMapper.get(entity).data.score);
+            }
+        });
     };
     CollisionSystem.prototype.overlap = function (a, b) {
         var ap = this.positionMapper.get(a);
@@ -3704,31 +3717,87 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 var TagManager = /** @class */function () {
     function TagManager() {
-        this.teams = {};
+        this.tags = {};
     }
-    TagManager.prototype.addTeam = function (teamName, entity) {
-        if (!this.teams[teamName]) {
-            this.teams[teamName] = [];
+    TagManager.prototype.addTeam = function (tag, entity) {
+        if (!this.tags[tag]) {
+            this.tags[tag] = [];
         }
-        var team = this.teams[teamName];
+        var team = this.tags[tag];
         if (team.indexOf(entity) === -1) {
             team.push(entity);
         }
     };
     TagManager.prototype.remove = function (entity) {
         var _this = this;
-        (0, _keys2.default)(this.teams).forEach(function (teamName) {
-            _this.teams[teamName] = _this.teams[teamName].filter(function (item) {
+        (0, _keys2.default)(this.tags).forEach(function (tag) {
+            _this.tags[tag] = _this.tags[tag].filter(function (item) {
                 return item !== entity;
             });
         });
     };
-    TagManager.prototype.getTeam = function (teamName) {
-        return this.teams[teamName];
+    TagManager.prototype.is = function (entity, tag) {
+        return this.tags[tag].indexOf(entity) > -1;
+    };
+    TagManager.prototype.getTeam = function (tag) {
+        return this.tags[tag];
     };
     return TagManager;
 }();
 exports.default = TagManager;
+
+/***/ }),
+/* 78 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _create = __webpack_require__(0);
+
+var _create2 = _interopRequireDefault(_create);
+
+var _setPrototypeOf = __webpack_require__(1);
+
+var _setPrototypeOf2 = _interopRequireDefault(_setPrototypeOf);
+
+var _Component = __webpack_require__(3);
+
+var _Component2 = _interopRequireDefault(_Component);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var __extends = undefined && undefined.__extends || function () {
+    var extendStatics = _setPrototypeOf2.default || { __proto__: [] } instanceof Array && function (d, b) {
+        d.__proto__ = b;
+    } || function (d, b) {
+        for (var p in b) {
+            if (b.hasOwnProperty(p)) d[p] = b[p];
+        }
+    };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() {
+            this.constructor = d;
+        }
+        d.prototype = b === null ? (0, _create2.default)(b) : (__.prototype = b.prototype, new __());
+    };
+}();
+
+var Payload = /** @class */function (_super) {
+    __extends(Payload, _super);
+    function Payload(data) {
+        var _this = _super.call(this) || this;
+        _this.data = data;
+        return _this;
+    }
+    return Payload;
+}(_Component2.default);
+exports.default = Payload;
 
 /***/ })
 /******/ ]);

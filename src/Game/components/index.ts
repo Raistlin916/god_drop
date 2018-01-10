@@ -4,6 +4,7 @@ import Bound from './Bound'
 import Physical from './Physical'
 import WallSensor from './WallSensor'
 import Spawner from './Spawner'
+import Payload from './Payload'
 
 export {
   Paint,
@@ -11,5 +12,6 @@ export {
   Bound,
   Physical,
   WallSensor,
-  Spawner
+  Spawner,
+  Payload
 }
