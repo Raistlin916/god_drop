@@ -331,7 +331,7 @@ var System = /** @class */function () {
         var cm = world.getComponentManager();
         var componentMappers = cm.getMappers();
         (0, _keys2.default)(componentMappers).forEach(function (key) {
-            _this[key.charAt(0).toLowerCase() + key.slice(1) + "Mapper"] = componentMappers[key];
+            _this[lowerFirstLetter(key) + "Mapper"] = componentMappers[key];
         });
         var systems = world.getSystems();
         systems.forEach(function (system) {
