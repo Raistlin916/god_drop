@@ -33,7 +33,7 @@ export default class World {
     return this.componentManager;
   }
 
-  public getComponent<T extends Component>(ComponentClass: new() => T, entity: Entity): T {
+  public getComponent<T extends Component>(ComponentClass: new(arg?) => T, entity: Entity): T {
     return this.componentManager.getComponent(ComponentClass, entity)
   }
 
