@@ -37,6 +37,10 @@ export default class Game {
     const player = entityFactory.createGod(this.world)
     this.world.getTagManager().addTeam('player', player)
     entityFactory.createItemSpawner(this.world)
+    entityFactory.createItemSpawner(this.world)
+    entityFactory.createItemSpawner(this.world)
+    entityFactory.createItemSpawner(this.world)
+    entityFactory.createItemSpawner(this.world)
 
     const scoreUI = new UIText(ctx, '', {
       fillStyle: '#333',

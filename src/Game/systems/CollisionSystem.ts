@@ -22,7 +22,6 @@ export default class CollisionSystem extends System {
       if (this.overlap(item, entity)) {
         this.entityManager.remove(item)
         this.payloadMapper.get(entity).data.score += this.payloadMapper.get(item).data.bonus
-        console.log(this.payloadMapper.get(entity).data.score)
       }
     })
 

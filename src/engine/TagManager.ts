@@ -24,6 +24,6 @@ export default class TagManager {
   }
 
   getTeam(tag: string): Array<Entity> {
-    return this.tags[tag];
+    return this.tags[tag] || [];
   }
 }

@@ -1,11 +1,12 @@
 import World from 'engine/World'
 import Entity from 'engine/Entity'
+import math from 'engine/utils/math'
 import { Position, Paint, Bound, Physical, WallSensor, Spawner, Payload } from './components/index'
 
 export default {
   createGod(world: World): Entity {
     return world.createEntity()
-      .add(new Position(canvas.width / 2, canvas.height / 2))
+      .add(new Position(canvas.width / 2, canvas.height - 130))
       .add(new Bound(100, 113.5))
       .add(new Paint('imgs/god.png'))
       .add(new Payload({
@@ -14,27 +15,50 @@ export default {
       .getEntity()
   },
   createItem(world: World): Entity {
-    // const seed = Math.ceil(Math.random() * 20)
-    const seed = 0
-    return world.createEntity()
-      .add(new Position(canvas.width / 2, 20))
-      .add(new Bound(40, 40))
+    const entityEditor = world.createEntity()
+      .add(new Position(math.getRandomInt(20, canvas.width - 50), -50))
       .add(new Physical(0, 5))
       .add(new WallSensor())
-      .add(new Paint('imgs/artifacts.png', {
-        sx: 10 + seed * 40,
-        sy: 8,
-        sw: 40,
-        sh: 40
-      }))
-      .add(new Payload({
-        bonus: 2
-      }))
-      .getEntity()
+
+    const types = [
+      'gold', 'gold_pack', 'gold_pack2', 'lucky'
+    ]
+    const type = types[math.getRandomInt(0, types.length - 1)]
+    if (type === 'gold') {
+      entityEditor.add(new Bound(38, 29))
+        .add(new Paint('imgs/gold.png'))
+        .add(new Payload({
+          bonus: 2
+        }))
+    } else if (type === 'gold_pack') {
+      entityEditor.add(new Bound(50, 42.5))
+        .add(new Paint('imgs/gold_pack.png'))
+        .add(new Payload({
+          bonus: 5
+        }))
+    } else if (type === 'gold_pack2') {
+      entityEditor.add(new Bound(40.5, 44.5))
+        .add(new Paint('imgs/gold_pack2.png'))
+        .add(new Payload({
+          bonus: 10
+        }))
+    } else if (type === 'lucky') {
+      entityEditor.add(new Bound(46.125, 48.75))
+        .add(new Paint('imgs/lucky/1.png'))
+        .add(new Payload({
+          bonus: 1
+        }))
+    }
+
+    return entityEditor.getEntity()
   },
   createItemSpawner(world: World): Entity {
     return world.createEntity()
-      .add(new Spawner('item', 60))
+      .add(new Spawner('item', {
+        minCooldown: 30,
+        maxCooldown: 120,
+        initialCooldown: math.getRandomInt(0, 60) / 2
+      }))
       .getEntity()
   }
 }
