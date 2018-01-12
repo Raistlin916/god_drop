@@ -60,5 +60,13 @@ export default {
         initialCooldown: math.getRandomInt(0, 60) / 2
       }))
       .getEntity()
+  },
+
+  createBg(world) {
+    return world.createEntity()
+      .add(new Paint('imgs/bg.png'))
+      .add(new Position(0, 0))
+      .add(new Bound(canvas.width, canvas.height))
+      .getEntity()
   }
 }

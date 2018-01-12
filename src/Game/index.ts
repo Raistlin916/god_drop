@@ -34,19 +34,24 @@ export default class Game {
   }
 
   private init() :void {
-    const player = entityFactory.createGod(this.world)
-    this.world.getTagManager().addTeam('player', player)
     entityFactory.createItemSpawner(this.world)
     entityFactory.createItemSpawner(this.world)
     entityFactory.createItemSpawner(this.world)
     entityFactory.createItemSpawner(this.world)
     entityFactory.createItemSpawner(this.world)
 
+    entityFactory.createBg(this.world)
+
+
+    const player = entityFactory.createGod(this.world)
+    this.world.getTagManager().addTeam('player', player)
+
     const scoreUI = new UIText(ctx, '', {
-      fillStyle: '#333',
-      fontSize: 16,
+      fillStyle: '#eee',
+      fontSize: 24,
+      fontFamily: 'Monaco',
       x: 20,
-      y: 20
+      y: 40
     })
     this.world.addUI(scoreUI)
     this.world.onProcessBegin = () => {
