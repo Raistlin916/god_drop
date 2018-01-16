@@ -23,7 +23,7 @@ export default {
       .add(new WallSensor())
 
     const types = [
-      'gold', 'gold_pack', 'gold_pack2', 'lucky'
+      'gold', 'gold_pack', 'gold_pack2', 'lucky', 'bomb'
     ]
     const type = types[math.getRandomInt(0, types.length - 1)]
     if (type === 'gold') {
@@ -49,6 +49,12 @@ export default {
         .add(new Paint('imgs/lucky/1.png'))
         .add(new Payload({
           bonus: 1
+        }))
+    } else if (type === 'bomb') {
+      entityEditor.add(new Bound(50, 73))
+        .add(new Paint('imgs/bomb.png'))
+        .add(new Payload({
+          bonus: -10
         }))
     }
 
