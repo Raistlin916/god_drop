@@ -1,5 +1,5 @@
-import World from 'engine/World'
 import Component, { Components } from 'engine/Component'
+import Scene from 'engine/Scene'
 import UIText from 'engine/UI/Text'
 import * as com from './components/index'
 import { Payload } from './components/index'
@@ -14,12 +14,13 @@ import entityFactory from './entityFactory'
 const components: Components = { ...com }
 const ctx: CanvasRenderingContext2D = canvas.getContext('2d')
 
-export default class Game {
-  private world: World
-  private running: Boolean = false
-
+export default class Game extends Scene {
   constructor() {
-    this.world = new World()
+    super()
+    this.start()
+  }
+
+  public init() :void {
     this.world.importComponents(components)
     this.world
       .addSystem(new PlayerControllerSystem(canvas))
@@ -29,20 +30,13 @@ export default class Game {
       .addSystem(new CollisionSystem())
       .addSystem(new RenderSystem(ctx))
 
-    this.loop = this.loop.bind(this)
-
-    this.init()
-    this.start()
-  }
-
-  private init() :void {
     entityFactory.createItemSpawner(this.world)
     entityFactory.createItemSpawner(this.world)
     entityFactory.createItemSpawner(this.world)
     entityFactory.createItemSpawner(this.world)
     entityFactory.createItemSpawner(this.world)
 
-    entityFactory.createBg(this.world)
+    entityFactory.createBackground(this.world)
 
 
     const player = entityFactory.createGod(this.world)
@@ -59,16 +53,5 @@ export default class Game {
     this.world.onProcessBegin = () => {
       scoreUI.text = this.world.getComponent(Payload, player).data.score
     }
-  }
-
-  public start() :void {
-    this.running = true
-    this.loop()
-  }
-
-  public loop() :void {
-    this.world.process()
-
-    requestAnimationFrame(this.loop)
   }
 }

@@ -70,7 +70,7 @@ export default {
       .getEntity()
   },
 
-  createBg(world) {
+  createBackground(world) {
     return world.createEntity()
       .add(new Paint('imgs/bg.png'))
       .add(new Position(0, 0))
