@@ -23,19 +23,19 @@ export default class Bound extends Component {
     }
   }
 
-  centerX() {
+  centerX(): number {
     return (this.x1 + this.x2) / 2
   }
 
-  centerY() {
+  centerY(): number {
     return (this.y1 + this.y2) / 2
   }
 
-  width() {
+  width(): number {
     return this.x2 - this.x1
   }
 
-  height() {
+  height(): number {
     return this.y2 - this.y1
   }
 }

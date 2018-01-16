@@ -7,6 +7,7 @@ import RenderSystem from './systems/RenderSystem'
 import PhysicalSystem from './systems/PhysicalSystem'
 import WallSensorSystem from './systems/WallSensorSystem'
 import SpawnerSystem from './systems/SpawnerSystem'
+import PlayerControllerSystem from './systems/PlayerControllerSystem'
 import CollisionSystem from './systems/CollisionSystem'
 import entityFactory from './entityFactory'
 
@@ -21,6 +22,7 @@ export default class Game {
     this.world = new World()
     this.world.importComponents(components)
     this.world
+      .addSystem(new PlayerControllerSystem(canvas))
       .addSystem(new SpawnerSystem())
       .addSystem(new WallSensorSystem())
       .addSystem(new PhysicalSystem())

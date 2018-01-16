@@ -5,6 +5,7 @@ import Physical from './Physical'
 import WallSensor from './WallSensor'
 import Spawner from './Spawner'
 import Payload from './Payload'
+import PlayerController from './PlayerController'
 
 export {
   Paint,
@@ -13,5 +14,6 @@ export {
   Physical,
   WallSensor,
   Spawner,
-  Payload
+  Payload,
+  PlayerController
 }

@@ -1,12 +1,14 @@
 import World from 'engine/World'
 import Entity from 'engine/Entity'
 import math from 'engine/utils/math'
-import { Position, Paint, Bound, Physical, WallSensor, Spawner, Payload } from './components/index'
+import { Position, Paint, Bound, Physical, WallSensor, Spawner, Payload, PlayerController } from './components/index'
 
 export default {
   createGod(world: World): Entity {
     return world.createEntity()
+      .add(new PlayerController())
       .add(new Position(canvas.width / 2, canvas.height - 130))
+      .add(new Physical(0, 0))
       .add(new Bound(100, 113.5))
       .add(new Paint('imgs/god.png'))
       .add(new Payload({
