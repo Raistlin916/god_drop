@@ -1,9 +1,10 @@
 import World from 'engine/World'
 import Entity from 'engine/Entity'
+import EntityEditor from 'engine/EntityEditor'
 import math from 'engine/utils/math'
-import { Position, Paint, Bound, Physical, WallSensor, Spawner, Payload, PlayerController } from './components/index'
+import { Position, Paint, Bound, Physical, WallSensor, Spawner, Payload, PlayerController, Gravity } from './components/index'
 
-export default {
+const instance = {
   createGod(world: World): Entity {
     return world.createEntity()
       .add(new PlayerController())
@@ -60,6 +61,7 @@ export default {
 
     return entityEditor.getEntity()
   },
+
   createItemSpawner(world: World): Entity {
     return world.createEntity()
       .add(new Spawner('item', {
@@ -70,11 +72,23 @@ export default {
       .getEntity()
   },
 
-  createBackground(world) {
+  createBackground(world: World): Entity {
     return world.createEntity()
       .add(new Paint('imgs/bg.png'))
       .add(new Position(0, 0))
       .add(new Bound(canvas.width, canvas.height))
       .getEntity()
+  },
+
+  createMassItemsSpawner(world: World): Entity {
+    return world.createEntity()
+      .add(new Spawner('massItem', {
+        minCooldown: 2,
+        maxCooldown: 5,
+        initialCooldown: 0
+      }))
+      .getEntity()
   }
 }
+
+export default instance

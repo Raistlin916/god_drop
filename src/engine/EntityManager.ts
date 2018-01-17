@@ -1,6 +1,6 @@
 import World from 'engine/World'
 import Entity from './Entity'
-import EntityEdit from './EntityEdit'
+import EntityEditor from './EntityEditor'
 import Aspect from './Aspect'
 
 export default class EntityManager {
@@ -12,10 +12,10 @@ export default class EntityManager {
     this.world = world
   }
 
-  create(): EntityEdit {
+  create(): EntityEditor {
     const entity = this.nextId ++;
     this.entities.push(entity);
-    return new EntityEdit(entity, this.world);
+    return new EntityEditor(entity, this.world);
   }
 
   clean(): void {

@@ -2,7 +2,11 @@ import System from 'engine/System'
 import Entity from 'engine/Entity'
 import Aspect from 'engine/Aspect'
 import ComponentMapper from 'engine/ComponentMapper'
+import EntityEditor from 'engine/EntityEditor'
 import Spawner from '../components/Spawner'
+import Position from '../components/Position'
+import Physical from '../components/Physical'
+import Gravity from '../components/Gravity'
 import entityFactory from '../entityFactory'
 import math from 'engine/utils/math'
 
@@ -18,6 +22,17 @@ export default class SpawnerSystem extends System {
       spawner.cooldown = math.getRandomInt(spawner.minCooldown, spawner.maxCooldown)
       const item = entityFactory.createItem(this.world)
       this.tagManager.addTeam('item', item)
+
+      if (spawner.type === 'massItem') {
+        const editor = new EntityEditor(item, this.world)
+        editor.setComponent(Position, {
+          x: canvas.width / 2,
+          y: 200
+        }).setComponent(Physical, {
+          vx: math.getRandom(-3, 3),
+          vy: -10
+        }).add(new Gravity())
+      }
     }
   }
 }

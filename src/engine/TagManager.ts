@@ -20,6 +20,9 @@ export default class TagManager {
   }
 
   is(entity: Entity, tag: string): boolean {
+    if (!this.tags[tag]) {
+      return false
+    }
     return this.tags[tag].indexOf(entity) > -1
   }
 

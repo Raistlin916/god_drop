@@ -1,7 +1,7 @@
 import UI from './UI/UI'
 import Entity from './Entity'
 import System from './System'
-import EntityEdit from './EntityEdit'
+import EntityEditor from './EntityEditor'
 import EntityManager from './EntityManager'
 import TagManager from './TagManager'
 import ComponentManager from './ComponentManager'
@@ -29,7 +29,7 @@ export default class World {
     return this.systems;
   }
 
-  public createEntity(): EntityEdit {
+  public createEntity(): EntityEditor {
     return this.entityManager.create();
   }
 

@@ -8,7 +8,6 @@ export default abstract class Scene {
   constructor(world: World) {
     this.world = world
     this.loop = this.loop.bind(this)
-    this.init()
   }
 
   abstract init(): void

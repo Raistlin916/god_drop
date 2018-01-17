@@ -8,8 +8,6 @@ import SpawnerSystem from './systems/SpawnerSystem'
 import PlayerControllerSystem from './systems/PlayerControllerSystem'
 import CollisionSystem from './systems/CollisionSystem'
 import MainScene from './scenes/Main'
-import StartScene from './scenes/Start'
-
 
 const components: Components = { ...com }
 const ctx: CanvasRenderingContext2D = canvas.getContext('2d')
@@ -26,8 +24,8 @@ export default class Game {
       .addSystem(new CollisionSystem())
       .addSystem(new RenderSystem(ctx))
 
-    const startScene = new StartScene(world)
     const mainScene = new MainScene(world)
+    mainScene.init()
     mainScene.start()
   }
 }
