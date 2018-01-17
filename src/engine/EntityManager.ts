@@ -18,6 +18,10 @@ export default class EntityManager {
     return new EntityEdit(entity, this.world);
   }
 
+  clean(): void {
+    this.entities = []
+  }
+
   remove(entity: Entity): void {
     const index = this.entities.indexOf(entity)
     if (index > -1) {

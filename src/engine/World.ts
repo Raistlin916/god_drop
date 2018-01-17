@@ -15,6 +15,10 @@ export default class World {
   private tagManager: TagManager = new TagManager();
   public frames: number = 0;
 
+  constructor(private ctx: CanvasRenderingContext2D) {
+
+  }
+
   public addSystem(system: System): this {
     this.systems.push(system);
     system.bindWorld(this);
@@ -54,7 +58,7 @@ export default class World {
         .forEach(entity => system.process(entity, delta));
       system.onEnd();
     });
-    this.UIs.forEach(ui => ui.doRender())
+    this.UIs.forEach(ui => ui.render(this.ctx))
     this.onProcessEnd();
   }
 
@@ -79,5 +83,12 @@ export default class World {
     for(let key in components) {
       this.componentManager.createMapper(components[key])
     }
+  }
+
+  public clean() {
+    this.UIs = []
+    this.entityManager.clean()
+    this.componentManager.clean()
+    this.tagManager.clean()
   }
 }

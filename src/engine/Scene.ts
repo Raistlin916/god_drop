@@ -5,11 +5,8 @@ export default abstract class Scene {
   protected world: World
   private running: Boolean = false
 
-  constructor(world?: World) {
-    if (!world) {
-      this.world = new World()
-    }
-
+  constructor(world: World) {
+    this.world = world
     this.loop = this.loop.bind(this)
     this.init()
   }

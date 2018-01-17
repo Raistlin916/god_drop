@@ -19,4 +19,8 @@ export default class ComponentMapper<T extends Component> {
   public getEntityIds(): number[] {
     return Object.keys(this.maps).map(id => +id)
   }
+
+  public clean(): void {
+    this.maps = {}
+  }
 }

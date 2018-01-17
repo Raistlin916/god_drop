@@ -10,10 +10,9 @@ interface TextOption {
 
 export default class Text extends UI {
   constructor(
-    public ctx: CanvasRenderingContext2D,
     public text: string | number,
     public textOption: TextOption
-  ) { super(ctx) }
+  ) { super() }
 
   public render(ctx: CanvasRenderingContext2D): void {
     const { textOption, text } = this

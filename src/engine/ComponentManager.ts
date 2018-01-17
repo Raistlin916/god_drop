@@ -42,4 +42,10 @@ export default class ComponentManager {
   public getMappers(): ComponentMappers {
     return this.componentMappers
   }
+
+  public clean(): void {
+    Object.keys(this.componentMappers).forEach(key => {
+      this.componentMappers[key].clean();
+    });
+  }
 }
