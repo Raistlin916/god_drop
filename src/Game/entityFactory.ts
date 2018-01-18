@@ -13,7 +13,7 @@ const instance = {
       .add(new Bound(100, 113.5))
       .add(new Paint('imgs/god.png'))
       .add(new Payload({
-        score: 2
+        score: 0
       }))
       .getEntity()
   },

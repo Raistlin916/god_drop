@@ -1,4 +1,5 @@
 import Scene from 'engine/Scene'
+import Entity from 'engine/Entity'
 import UIText from 'engine/UI/Text'
 import EntityEditor from 'engine/EntityEditor'
 import { Payload, Position, Bound, Paint } from '../components/index'
@@ -7,6 +8,8 @@ import Input from '../Input'
 
 export default class Main extends Scene {
   private input: Input = new Input()
+  private pot: Entity
+  private section: number
 
   public init(): void {
     entityFactory.createBackground(this.world)
@@ -14,35 +17,34 @@ export default class Main extends Scene {
   }
 
   startSection1() {
+    this.section = 1
     const { world } = this
 
     const pot = entityFactory.createPot(world)
+    this.pot = pot
     this.input.on('click', e => {
       const position: Position = this.world.getComponent(Position, pot)
       const bound: Bound = this.world.getComponent(Bound, pot)
 
       if (bound.isIn(position, e)) {
-        const editor = new EntityEditor(pot, world)
-        editor.setComponent(Paint, {
-          animation: 'shake'
-        })
-
-      entityFactory.createMassItemsSpawner(world)
-      const player = entityFactory.createGod(world)
-      world.getTagManager().addTeam('player', player)
+        this.startSection2()
       }
 
     })
   }
 
   startSection2() {
-    const { world } = this
-    entityFactory.createItemSpawner(world)
-    entityFactory.createItemSpawner(world)
-    entityFactory.createItemSpawner(world)
-    entityFactory.createItemSpawner(world)
-    entityFactory.createItemSpawner(world)
+    if (this.section !== 1) {
+      return
+    }
+    this.section = 2
+    const { pot, world } = this
+    const editor = new EntityEditor(pot, world)
+    editor.setComponent(Paint, {
+      animation: 'shake'
+    })
 
+    entityFactory.createMassItemsSpawner(world)
     const player = entityFactory.createGod(world)
     world.getTagManager().addTeam('player', player)
 
