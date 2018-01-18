@@ -88,6 +88,14 @@ const instance = {
         initialCooldown: 0
       }))
       .getEntity()
+  },
+
+  createPot(world: World): Entity {
+    return world.createEntity()
+      .add(new Paint('imgs/pot.png'))
+      .add(new Bound(256, 238.5))
+      .add(new Position(canvas.width / 2 - 128, 200))
+      .getEntity()
   }
 }
 

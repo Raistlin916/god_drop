@@ -26,7 +26,7 @@ export default class SpawnerSystem extends System {
       if (spawner.type === 'massItem') {
         const editor = new EntityEditor(item, this.world)
         editor.setComponent(Position, {
-          x: canvas.width / 2,
+          x: canvas.width / 2 - 20,
           y: 200
         }).setComponent(Physical, {
           vx: math.getRandom(-3, 3),

@@ -6,6 +6,7 @@ import EntityManager from './EntityManager'
 import TagManager from './TagManager'
 import ComponentManager from './ComponentManager'
 import Component, { Components } from './Component'
+import EventEmitter from './utils/EventEmitter'
 
 export default class World {
   private systems: System[] = [];
@@ -14,6 +15,7 @@ export default class World {
   private componentManager: ComponentManager = new ComponentManager(this);
   private tagManager: TagManager = new TagManager();
   public frames: number = 0;
+  private eventEmitter: EventEmitter = new EventEmitter();
 
   constructor(private ctx: CanvasRenderingContext2D) {
 
@@ -37,7 +39,7 @@ export default class World {
     return this.componentManager;
   }
 
-  public getComponent<T extends Component>(ComponentClass: new(arg?) => T, entity: Entity): T {
+  public getComponent<T extends Component>(ComponentClass: new(arg?, arg2?) => T, entity: Entity): T {
     return this.componentManager.getComponent(ComponentClass, entity)
   }
 

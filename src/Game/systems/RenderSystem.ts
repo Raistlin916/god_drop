@@ -37,6 +37,14 @@ export default class RenderSystem extends System {
 
   }
 
+  private handleAnimation(ctx: CanvasRenderingContext2D, paint: Paint, position: Position, bound: Bound): void {
+    if (paint.animation === 'shake') {
+      const c = paint.animationCount
+      ctx.translate(Math.cos(1 * c) + Math.cos(3 * c), Math.sin(0.5 * c) + Math.sin(0.571 * c))
+      paint.animationCount ++
+    }
+  }
+
   public process(entity: Entity): void {
     const { ctx } = this
 
@@ -45,12 +53,18 @@ export default class RenderSystem extends System {
     const bound = this.boundMapper.get(entity)
 
     ctx.save()
+    ctx.translate(position.x, position.y)
+
+    if (paint.animation) {
+      this.handleAnimation(ctx, paint, position, bound)
+    }
+
     if (paint.imageRenderOptions) {
       const { imageRenderOptions } = paint
       ctx.drawImage(paint.img, imageRenderOptions.sx, imageRenderOptions.sy,
-        imageRenderOptions.sw, imageRenderOptions.sh, position.x, position.y, bound.x2, bound.y2)
+        imageRenderOptions.sw, imageRenderOptions.sh, 0, 0, bound.x2, bound.y2)
     } else {
-      ctx.drawImage(paint.img, position.x, position.y, bound.x2, bound.y2)
+      ctx.drawImage(paint.img, 0, 0, bound.x2, bound.y2)
     }
 
     ctx.restore()

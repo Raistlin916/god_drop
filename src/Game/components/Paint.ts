@@ -10,6 +10,8 @@ interface ImageRenderOptions {
 export default class Paint extends Component {
   public img: HTMLImageElement;
   public imageRenderOptions: ImageRenderOptions;
+  public animation: string;
+  public animationCount: number = 0;
 
   constructor(src: string, imageRenderOptions?: ImageRenderOptions) {
     super()
