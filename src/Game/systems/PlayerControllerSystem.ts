@@ -5,12 +5,14 @@ import Aspect from 'engine/Aspect'
 import PlayerController from '../components/PlayerController'
 import Position from '../components/Position'
 import Physical from '../components/Physical'
+import Paint from '../components/Paint'
 import Bound from '../components/Bound'
 
 export default class PlayerControllerSystem extends System {
   private positionMapper: ComponentMapper<Position>
   private physicalMapper: ComponentMapper<Physical>
   private boundMapper: ComponentMapper<Bound>
+  private paintMapper: ComponentMapper<Paint>
   private finger: Position = new Position(0, 0)
   private isControl: boolean = false
 
@@ -56,6 +58,9 @@ export default class PlayerControllerSystem extends System {
       const direction: number = delta / Math.abs(delta)
       const speed: number = Math.min(5, Math.abs(physical.vx) + 0.5)
       physical.vx = direction * speed
+
+      const paint: Paint = this.paintMapper.get(entity)
+      paint.state = direction > 0 ? 'reverse' : null
     }
   }
 }
