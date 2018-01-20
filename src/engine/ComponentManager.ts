@@ -33,7 +33,11 @@ export default class ComponentManager {
     return this.componentMappers[componentClass.name].get(entity)
   }
 
-  public remove(entity: Entity): void {
+  public removeComponent<T extends Component>(componentClass: new () => T, entity: Entity): T {
+    return this.componentMappers[componentClass.name].remove(entity)
+  }
+
+  public removeEntity(entity: Entity): void {
     Object.keys(this.componentMappers).forEach(key => {
       this.componentMappers[key].remove(entity);
     });

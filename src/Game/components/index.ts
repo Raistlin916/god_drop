@@ -7,6 +7,7 @@ import Spawner from './Spawner'
 import Payload from './Payload'
 import PlayerController from './PlayerController'
 import Gravity from './Gravity'
+import RigidBody from './RigidBody'
 
 export {
   Paint,
@@ -17,5 +18,6 @@ export {
   Spawner,
   Payload,
   PlayerController,
-  Gravity
+  Gravity,
+  RigidBody
 }

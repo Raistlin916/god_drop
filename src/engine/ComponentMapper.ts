@@ -12,8 +12,10 @@ export default class ComponentMapper<T extends Component> {
     this.maps[entity] = component
   }
 
-  public remove(entity: Entity) {
+  public remove(entity: Entity): T {
+    const result = this.maps[entity]
     delete this.maps[entity]
+    return result
   }
 
   public getEntityIds(): number[] {

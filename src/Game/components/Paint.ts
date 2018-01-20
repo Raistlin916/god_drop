@@ -12,6 +12,7 @@ export default class Paint extends Component {
   public imageRenderOptions: ImageRenderOptions;
   public animation: string;
   public animationCount: number = 0;
+  public animationDuration: number = 60;
   public state: string;
 
   constructor(src: string, imageRenderOptions?: ImageRenderOptions) {

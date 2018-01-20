@@ -2,14 +2,15 @@ import World from 'engine/World'
 import Entity from 'engine/Entity'
 import EntityEditor from 'engine/EntityEditor'
 import math from 'engine/utils/math'
-import { Position, Paint, Bound, Physical, WallSensor, Spawner, Payload, PlayerController, Gravity } from './components/index'
+import { Position, Paint, Bound, Physical, WallSensor, Spawner, Payload, PlayerController, Gravity, RigidBody } from './components/index'
 
 const instance = {
   createGod(world: World): Entity {
     return world.createEntity()
       .add(new PlayerController())
-      .add(new Position(canvas.width / 2, canvas.height - 130))
+      .add(new Position(canvas.width / 2, canvas.height - 160))
       .add(new Physical(0, 0))
+      .add(new RigidBody())
       .add(new Bound(100, 113.5))
       .add(new Paint('imgs/god.png'))
       .add(new Payload({
@@ -21,6 +22,7 @@ const instance = {
     const entityEditor = world.createEntity()
       .add(new Position(math.getRandomInt(20, canvas.width - 50), -50))
       .add(new Physical(0, 5))
+      .add(new RigidBody())
       .add(new WallSensor())
 
     const types = [

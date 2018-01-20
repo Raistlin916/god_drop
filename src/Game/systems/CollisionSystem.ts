@@ -1,17 +1,19 @@
 import System from 'engine/System'
 import Entity from 'engine/Entity'
 import Aspect from 'engine/Aspect'
+import EntityEditor from 'engine/EntityEditor'
 import ComponentMapper from 'engine/ComponentMapper'
-import { Bound, Position, Physical, Payload } from '../components/index'
+import { Bound, Position, Physical, Payload, RigidBody, Gravity, Paint } from '../components/index'
 
 export default class CollisionSystem extends System {
   private positionMapper: ComponentMapper<Position>
   private physicalMapper: ComponentMapper<Physical>
   private boundMapper: ComponentMapper<Bound>
   private payloadMapper: ComponentMapper<Payload>
+  private rigidBodyMapper: ComponentMapper<RigidBody>
 
   constructor() {
-    super(Aspect.all(Position, Bound))
+    super(Aspect.all(Position, Bound, RigidBody))
   }
 
   public process(entity: Entity): void {
@@ -19,9 +21,26 @@ export default class CollisionSystem extends System {
       return
     }
     this.tagManager.getTeam('item').forEach((item: Entity) => {
+      if (!this.rigidBodyMapper.get(item)) {
+        return
+      }
       if (this.overlap(item, entity)) {
         this.payloadMapper.get(entity).data.score += this.payloadMapper.get(item).data.bonus
-        this.entityManager.remove(item)
+        const editor = new EntityEditor(item, this.world)
+        editor.removeComponent(RigidBody, item)
+          .removeComponent(Gravity, item)
+          .setComponent(Physical, {
+            vx: 0,
+            vy: -5
+          })
+          .setComponent(Paint, {
+            animation: 'fadeOut',
+            animationCount: 10,
+            animationDuration: 20
+          })
+        setTimeout(() => {
+          this.entityManager.remove(item)
+        }, 100)
       }
     })
 

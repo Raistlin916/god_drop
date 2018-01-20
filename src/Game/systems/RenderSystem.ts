@@ -38,10 +38,21 @@ export default class RenderSystem extends System {
   }
 
   private handleAnimation(ctx: CanvasRenderingContext2D, paint: Paint, position: Position, bound: Bound): void {
+    const c = paint.animationCount
+    const d = paint.animationDuration
+
     if (paint.animation === 'shake') {
-      const c = paint.animationCount
       ctx.translate(Math.cos(1 * c) + Math.cos(3 * c), Math.sin(0.5 * c) + Math.sin(0.571 * c))
       paint.animationCount ++
+    }
+
+    if (paint.animation === 'fadeOut') {
+      ctx.globalAlpha = Math.max((d - c), 0) / c
+      paint.animationCount ++
+    }
+
+    if (paint.animationCount >= paint.animationDuration) {
+      paint.animation = null
     }
   }
 
