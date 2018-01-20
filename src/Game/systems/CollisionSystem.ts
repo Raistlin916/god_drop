@@ -38,9 +38,12 @@ export default class CollisionSystem extends System {
             animationCount: 10,
             animationDuration: 20
           })
-        setTimeout(() => {
-          this.entityManager.remove(item)
-        }, 100)
+        const removeEvent = this.world.eventBus.on('animationEnd', (entity: Entity) => {
+          if (entity === item) {
+            this.entityManager.remove(item)
+            removeEvent()
+          }
+        })
       }
     })
 

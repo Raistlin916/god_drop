@@ -37,7 +37,7 @@ export default class RenderSystem extends System {
 
   }
 
-  private handleAnimation(ctx: CanvasRenderingContext2D, paint: Paint, position: Position, bound: Bound): void {
+  private handleAnimation(entity: Entity, ctx: CanvasRenderingContext2D, paint: Paint, position: Position, bound: Bound): void {
     const c = paint.animationCount
     const d = paint.animationDuration
 
@@ -52,11 +52,12 @@ export default class RenderSystem extends System {
     }
 
     if (paint.animationCount >= paint.animationDuration) {
+      this.world.eventBus.emit('animationEnd', entity)
       paint.animation = null
     }
   }
 
-  private handleState(ctx: CanvasRenderingContext2D, paint: Paint, position: Position, bound: Bound): void {
+  private handleState(entity: Entity, ctx: CanvasRenderingContext2D, paint: Paint, position: Position, bound: Bound): void {
     if (paint.state === 'reverse') {
       ctx.translate(bound.centerX(), 0)
       ctx.scale(-1, 1)
@@ -75,11 +76,11 @@ export default class RenderSystem extends System {
     ctx.translate(position.x, position.y)
 
     if (paint.animation) {
-      this.handleAnimation(ctx, paint, position, bound)
+      this.handleAnimation(entity, ctx, paint, position, bound)
     }
 
     if (paint.state) {
-      this.handleState(ctx, paint, position, bound)
+      this.handleState(entity, ctx, paint, position, bound)
     }
 
     if (paint.imageRenderOptions) {

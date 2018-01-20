@@ -1,10 +1,20 @@
 export default class EventEmitter {
   private events: object = {}
 
-  public on(name: string, cb: Function): this {
-    this.events[name] || (this.events[name] = []);
+  public on(name: string, cb: Function): Function {
+    if (!this.events[name]) {
+      this.events[name] = [];
+    }
     this.events[name].push(cb);
-    return this;
+    return () => this.remove(name, cb);
+  }
+
+  public once(name: string, cb: Function): void {
+    const fn = (...args) => {
+      cb(...args)
+      this.remove(name, fn)
+    }
+    this.on(name, fn)
   }
 
   public emit(name: string, ...args) {

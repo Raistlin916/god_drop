@@ -23,18 +23,19 @@ export default class Input extends EventEmitter {
       instance = this
     }
   }
-  public on(name: string, cb: (e: InputEvent) => void): this {
+  public on(name: string, cb: (e: InputEvent) => void): Function {
     const targetEventName = eventMapper[name]
     if (!targetEventName) {
       return
     }
-    canvas.addEventListener(targetEventName, (e: TouchEvent) => {
+    const handler = (e: TouchEvent) => {
       e.preventDefault()
       cb({
         x: e.touches[0].clientX,
         y: e.touches[0].clientY,
       })
-    })
-    return this
+    }
+    canvas.addEventListener(targetEventName, handler)
+    return () => canvas.removeEventListener(targetEventName, handler)
   }
 }

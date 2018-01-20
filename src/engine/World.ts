@@ -15,7 +15,7 @@ export default class World {
   private componentManager: ComponentManager = new ComponentManager(this);
   private tagManager: TagManager = new TagManager();
   public frames: number = 0;
-  private eventEmitter: EventEmitter = new EventEmitter();
+  public eventBus: EventEmitter = new EventEmitter();
 
   constructor(private ctx: CanvasRenderingContext2D) {
 
