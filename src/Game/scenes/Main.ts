@@ -41,7 +41,8 @@ export default class Main extends Scene {
     const { pot, world } = this
     const editor = new EntityEditor(pot, world)
     editor.setComponent(Paint, {
-      animation: 'shake'
+      animation: 'shake',
+      animationDuration: Infinity
     })
 
     entityFactory.createMassItemsSpawner(world)

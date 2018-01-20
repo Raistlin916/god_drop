@@ -35,8 +35,8 @@ export default class CollisionSystem extends System {
           })
           .setComponent(Paint, {
             animation: 'fadeOut',
-            animationCount: 10,
-            animationDuration: 20
+            animationCount: 5,
+            animationDuration: 15
           })
         const removeEvent = this.world.eventBus.on('animationEnd', (entity: Entity) => {
           if (entity === item) {
