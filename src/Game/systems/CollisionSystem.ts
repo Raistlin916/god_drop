@@ -20,7 +20,7 @@ export default class CollisionSystem extends System {
     if (!this.tagManager.is(entity, 'player')) {
       return
     }
-    this.tagManager.getTeam('item').forEach((item: Entity) => {
+    this.tagManager.getByTag('item').forEach((item: Entity) => {
       if (!this.rigidBodyMapper.get(item)) {
         return
       }

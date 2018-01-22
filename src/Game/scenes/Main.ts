@@ -16,7 +16,7 @@ export default class Main extends Scene {
     this.startSection1()
   }
 
-  startSection1() {
+  startSection1(): void {
     this.section = 1
     const { world } = this
 
@@ -33,12 +33,14 @@ export default class Main extends Scene {
     })
   }
 
-  startSection2() {
+  startSection2(): void {
     if (this.section !== 1) {
       return
     }
     this.section = 2
     const { pot, world } = this
+    this.initCountDown()
+
     const editor = new EntityEditor(pot, world)
     editor.setComponent(Paint, {
       animation: 'shake',
@@ -47,18 +49,38 @@ export default class Main extends Scene {
 
     entityFactory.createMassItemsSpawner(world)
     const player = entityFactory.createGod(world)
-    world.getTagManager().addTeam('player', player)
+    world.getTagManager().addTag('player', player)
 
-    const scoreUI = new UIText('', {
+    const scoreText = new UIText('', {
       fillStyle: '#eee',
       fontSize: 24,
       fontFamily: 'Monaco',
       x: 20,
       y: 40
     })
-    world.addUI(scoreUI)
-    world.onProcessBegin = () => {
-      scoreUI.text = this.world.getComponent(Payload, player).data.score
-    }
+    world.addUI(scoreText)
+    world.eventBus.on('processEnd', () => {
+      scoreText.text = this.world.getComponent(Payload, player).data.score
+    })
+  }
+
+  initCountDown() {
+    const { world } = this
+    const startAt: number = world.totalFrames
+    const countDownText =  new UIText('', {
+      fillStyle: '#eee',
+      fontSize: 24,
+      fontFamily: 'Monaco',
+      x: 20,
+      y: 300
+    })
+    world.addUI(countDownText)
+    world.eventBus.on('processBegin', () => {
+      const countDown = 10 - Math.floor((world.totalFrames - startAt) / 60)
+      countDownText.text = countDown
+      if (countDown === 0) {
+        this.pause()
+      }
+    })
   }
 }

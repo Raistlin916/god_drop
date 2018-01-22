@@ -3,13 +3,13 @@ import Entity from './Entity';
 export default class TagManager {
   private tags: object = {};
 
-  addTeam(tag: string, entity: Entity): void {
+  addTag(tag: string, entity: Entity): void {
     if (!this.tags[tag]) {
       this.tags[tag] = [];
     }
-    const team = this.tags[tag];
-    if (team.indexOf(entity) === -1) {
-      team.push(entity);
+    const group = this.tags[tag];
+    if (group.indexOf(entity) === -1) {
+      group.push(entity);
     }
   }
 
@@ -26,7 +26,7 @@ export default class TagManager {
     return this.tags[tag].indexOf(entity) > -1
   }
 
-  getTeam(tag: string): Array<Entity> {
+  getByTag(tag: string): Array<Entity> {
     return this.tags[tag] || [];
   }
 

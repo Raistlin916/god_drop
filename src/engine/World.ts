@@ -14,7 +14,7 @@ export default class World {
   private entityManager: EntityManager = new EntityManager(this);
   private componentManager: ComponentManager = new ComponentManager(this);
   private tagManager: TagManager = new TagManager();
-  public frames: number = 0;
+  public totalFrames: number = 0;
   public eventBus: EventEmitter = new EventEmitter();
 
   constructor(private ctx: CanvasRenderingContext2D) {
@@ -52,8 +52,8 @@ export default class World {
   }
 
   public process(delta?: number): void {
-    this.frames += 1
-    this.onProcessBegin();
+    this.totalFrames += 1
+    this.eventBus.emit('processBegin');
     this.systems.forEach(system => {
       system.onBegin();
       this.entityManager.query(system.getAspect())
@@ -61,15 +61,7 @@ export default class World {
       system.onEnd();
     });
     this.UIs.forEach(ui => ui.render(this.ctx))
-    this.onProcessEnd();
-  }
-
-  public onProcessBegin(): void {
-
-  }
-
-  public onProcessEnd(): void {
-
+    this.eventBus.emit('processEnd');
   }
 
   public addUI(ui: UI): void {

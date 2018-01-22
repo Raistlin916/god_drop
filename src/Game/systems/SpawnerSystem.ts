@@ -21,7 +21,7 @@ export default class SpawnerSystem extends System {
     if (spawner.cooldown <= 0) {
       spawner.cooldown = math.getRandomInt(spawner.minCooldown, spawner.maxCooldown)
       const item = entityFactory.createItem(this.world)
-      this.tagManager.addTeam('item', item)
+      this.tagManager.addTag('item', item)
 
       if (spawner.type === 'massItem') {
         const editor = new EntityEditor(item, this.world)
