@@ -98,6 +98,14 @@ const instance = {
       .add(new Bound(256, 238.5))
       .add(new Position(canvas.width / 2 - 128, 200))
       .getEntity()
+  },
+
+  createYellowBg(world: World): Entity {
+    return world.createEntity()
+      .add(new Paint('rect', {
+        color: '#f8e879'
+      }))
+      .getEntity()
   }
 }
 

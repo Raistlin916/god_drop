@@ -83,12 +83,17 @@ export default class RenderSystem extends System {
       this.handleState(entity, ctx, paint, position, bound)
     }
 
-    if (paint.imageRenderOptions) {
-      const { imageRenderOptions } = paint
-      ctx.drawImage(paint.img, imageRenderOptions.sx, imageRenderOptions.sy,
-        imageRenderOptions.sw, imageRenderOptions.sh, 0, 0, bound.x2, bound.y2)
-    } else {
-      ctx.drawImage(paint.img, 0, 0, bound.x2, bound.y2)
+    const renderOptions: any = paint.renderOptions
+    if (paint.type === 'image') {
+      if (renderOptions) {
+        ctx.drawImage(paint.img, renderOptions.sx, renderOptions.sy,
+          renderOptions.sw, renderOptions.sh, 0, 0, bound.x2, bound.y2)
+      } else {
+        ctx.drawImage(paint.img, 0, 0, bound.x2, bound.y2)
+      }
+    } else if (paint.type === 'rect') {
+      ctx.fillStyle = renderOptions.color
+      ctx.fillRect(0, 0, bound.x2, bound.y2)
     }
 
     ctx.restore()

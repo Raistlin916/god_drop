@@ -2,7 +2,7 @@ import Scene from 'engine/Scene'
 import Entity from 'engine/Entity'
 import UIText from 'engine/UI/Text'
 import EntityEditor from 'engine/EntityEditor'
-import { Payload, Position, Bound, Paint } from '../components/index'
+import { Payload, Position, Bound, Paint, Physical } from '../components/index'
 import entityFactory from '../entityFactory'
 import Input from '../Input'
 
@@ -10,11 +10,13 @@ export default class Main extends Scene {
   private input: Input = new Input()
   private pot: Entity
   private itemSpawner: Entity
+  private bg: Entity
   private section: number
 
   public init(): void {
-    entityFactory.createBackground(this.world)
-    this.startSection1()
+    this.bg = entityFactory.createBackground(this.world)
+    // this.startSection1()
+    this.startStatistics()
   }
 
   startSection1(): void {
@@ -65,7 +67,15 @@ export default class Main extends Scene {
     })
   }
 
-  initCountDown() {
+  startStatistics(): void {
+    const { world } = this
+    const editor = new EntityEditor(this.bg, world)
+    editor.add(new Physical(0, -4))
+
+    entityFactory.createYellowBg(world)
+  }
+
+  initCountDown(): void {
     const { world } = this
     const startAt: number = world.totalFrames
     const countDownText =  new UIText('', {
@@ -83,6 +93,7 @@ export default class Main extends Scene {
       if (countDown === 0) {
         this.world.getEntityManager().remove(this.itemSpawner)
         countDownText.text = '时间到!'
+        countDownText.textOption.fontSize = 30
 
         const editor = new EntityEditor(this.pot, world)
         editor.setComponent(Paint, {
