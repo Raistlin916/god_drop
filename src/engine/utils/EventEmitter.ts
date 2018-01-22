@@ -25,13 +25,14 @@ export default class EventEmitter {
   }
 
   public remove(name: string, fn: Function) {
-    if(!this.events[name]) {
+    const targetEvent = this.events[name]
+    if (!targetEvent) {
       return;
     }
     if(fn) {
-      let index = this.events[name].indexOf(fn);
-      if (index > 0) {
-        this.events[name].splice(index, 1);
+      let index = targetEvent.indexOf(fn);
+      if (index > -1) {
+        targetEvent.splice(index, 1);
       }
     } else {
       delete this.events[name];

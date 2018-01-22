@@ -9,6 +9,7 @@ import Input from '../Input'
 export default class Main extends Scene {
   private input: Input = new Input()
   private pot: Entity
+  private itemSpawner: Entity
   private section: number
 
   public init(): void {
@@ -29,7 +30,6 @@ export default class Main extends Scene {
       if (bound.isIn(position, e)) {
         this.startSection2()
       }
-
     })
   }
 
@@ -47,13 +47,14 @@ export default class Main extends Scene {
       animationDuration: Infinity
     })
 
-    entityFactory.createMassItemsSpawner(world)
+    this.itemSpawner = entityFactory.createMassItemsSpawner(world)
     const player = entityFactory.createGod(world)
     world.getTagManager().addTag('player', player)
 
     const scoreText = new UIText('', {
       fillStyle: '#eee',
       fontSize: 24,
+      textAlign: 'center',
       fontFamily: 'Monaco',
       x: 20,
       y: 40
@@ -68,18 +69,27 @@ export default class Main extends Scene {
     const { world } = this
     const startAt: number = world.totalFrames
     const countDownText =  new UIText('', {
-      fillStyle: '#eee',
-      fontSize: 24,
+      fillStyle: '#f8e879',
+      fontSize: 60,
       fontFamily: 'Monaco',
-      x: 20,
-      y: 300
+      textAlign: 'center',
+      x: canvas.width / 2,
+      y: 100
     })
     world.addUI(countDownText)
-    world.eventBus.on('processBegin', () => {
-      const countDown = 10 - Math.floor((world.totalFrames - startAt) / 60)
+    const removeEvent = world.eventBus.on('processBegin', () => {
+      const countDown = 5 - Math.floor((world.totalFrames - startAt) / 60)
       countDownText.text = countDown
       if (countDown === 0) {
-        this.pause()
+        this.world.getEntityManager().remove(this.itemSpawner)
+        countDownText.text = '时间到!'
+
+        const editor = new EntityEditor(this.pot, world)
+        editor.setComponent(Paint, {
+          animation: null
+        })
+
+        removeEvent()
       }
     })
   }

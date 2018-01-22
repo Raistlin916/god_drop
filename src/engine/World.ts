@@ -60,7 +60,11 @@ export default class World {
         .forEach(entity => system.process(entity, delta));
       system.onEnd();
     });
-    this.UIs.forEach(ui => ui.render(this.ctx))
+    this.UIs.forEach(ui => {
+      this.ctx.save()
+      ui.render(this.ctx)
+      this.ctx.restore()
+    })
     this.eventBus.emit('processEnd');
   }
 

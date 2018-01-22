@@ -4,6 +4,7 @@ interface TextOption {
   fillStyle: string,
   fontSize: number,
   fontFamily?: string,
+  textAlign?: string,
   x: number,
   y: number
 }
@@ -21,6 +22,9 @@ export default class Text extends UI {
       ctx.font = `${textOption.fontSize}px ${textOption.fontFamily}`
     } else {
       ctx.font = ctx.font.replace(/\d+px/, textOption.fontSize + 'px')
+    }
+    if (textOption.textAlign) {
+      ctx.textAlign = textOption.textAlign
     }
     ctx.fillText(text + '', textOption.x, textOption.y)
   }

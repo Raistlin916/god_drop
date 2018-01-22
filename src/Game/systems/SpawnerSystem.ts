@@ -29,7 +29,7 @@ export default class SpawnerSystem extends System {
           x: canvas.width / 2 - 20,
           y: 200
         }).setComponent(Physical, {
-          vx: math.getRandom(-3, 3),
+          vx: math.getRandom(-1.5, 1.5),
           vy: -10
         }).add(new Gravity())
       }
