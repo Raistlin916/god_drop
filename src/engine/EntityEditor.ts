@@ -18,10 +18,10 @@ export default class EntityEditor {
     return this;
   }
 
-  public removeComponent<T extends Component>(componentClass: new () => T, entity: Entity): this {
+  public removeComponent<T extends Component>(componentClass: new () => T): this {
     this.world
       .getComponentManager()
-      .removeComponent(componentClass, entity)
+      .removeComponent(componentClass, this.entity)
     return this;
   }
 

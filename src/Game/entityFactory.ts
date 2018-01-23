@@ -4,6 +4,14 @@ import EntityEditor from 'engine/EntityEditor'
 import math from 'engine/utils/math'
 import { Position, Paint, Bound, Physical, WallSensor, Spawner, Payload, PlayerController, Gravity, RigidBody } from './components/index'
 
+export const bonusMap = {
+  gold: 2,
+  gold_pack: 5,
+  gold_pack2: 10,
+  lucky: 1,
+  bomb: -10
+}
+
 const instance = {
   createGod(world: World): Entity {
     return world.createEntity()
@@ -14,51 +22,49 @@ const instance = {
       .add(new Bound(100, 113.5))
       .add(new Paint('imgs/god.png'))
       .add(new Payload({
-        score: 0
+        score: 0,
+        catched: {}
       }))
       .getEntity()
   },
-  createItem(world: World): Entity {
+  createItem(world: World, customType?: string): Entity {
     const entityEditor = world.createEntity()
-      .add(new Position(math.getRandomInt(20, canvas.width - 50), -50))
-      .add(new Physical(0, 5))
+      .add(new Position(canvas.width / 2, canvas.height / 2))
+      .add(new Physical(0, 0))
       .add(new RigidBody())
       .add(new WallSensor())
 
     const types = [
       'gold', 'gold_pack', 'gold_pack2', 'lucky', 'bomb'
     ]
-    const type = types[math.getRandomInt(0, types.length - 1)]
+    if (customType && types.indexOf(customType) === -1) {
+      throw new Error('unknown item type')
+    }
+    const type = customType || types[math.getRandomInt(0, types.length - 1)]
+    const payload = new Payload({
+      bonus: bonusMap[type],
+      type
+    })
     if (type === 'gold') {
       entityEditor.add(new Bound(38, 29))
         .add(new Paint('imgs/gold.png'))
-        .add(new Payload({
-          bonus: 2
-        }))
+        .add(payload)
     } else if (type === 'gold_pack') {
       entityEditor.add(new Bound(50, 42.5))
         .add(new Paint('imgs/gold_pack.png'))
-        .add(new Payload({
-          bonus: 5
-        }))
+        .add(payload)
     } else if (type === 'gold_pack2') {
       entityEditor.add(new Bound(40.5, 44.5))
         .add(new Paint('imgs/gold_pack2.png'))
-        .add(new Payload({
-          bonus: 10
-        }))
+        .add(payload)
     } else if (type === 'lucky') {
       entityEditor.add(new Bound(46.125, 48.75))
         .add(new Paint('imgs/lucky/1.png'))
-        .add(new Payload({
-          bonus: 1
-        }))
+        .add(payload)
     } else if (type === 'bomb') {
       entityEditor.add(new Bound(50, 73))
         .add(new Paint('imgs/bomb.png'))
-        .add(new Payload({
-          bonus: -10
-        }))
+        .add(payload)
     }
 
     return entityEditor.getEntity()
@@ -77,6 +83,17 @@ const instance = {
   createBackground(world: World): Entity {
     return world.createEntity()
       .add(new Paint('imgs/bg.png'))
+      .add(new Position(0, 0))
+      .add(new Physical(0, 0))
+      .add(new Bound(canvas.width, canvas.height))
+      .getEntity()
+  },
+
+  createYellowBg(world: World): Entity {
+    return world.createEntity()
+      .add(new Paint('rect', {
+        color: '#f8e879'
+      }))
       .add(new Position(0, 0))
       .add(new Bound(canvas.width, canvas.height))
       .getEntity()
@@ -97,14 +114,6 @@ const instance = {
       .add(new Paint('imgs/pot.png'))
       .add(new Bound(256, 238.5))
       .add(new Position(canvas.width / 2 - 128, 200))
-      .getEntity()
-  },
-
-  createYellowBg(world: World): Entity {
-    return world.createEntity()
-      .add(new Paint('rect', {
-        color: '#f8e879'
-      }))
       .getEntity()
   }
 }

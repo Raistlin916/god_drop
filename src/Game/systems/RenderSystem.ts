@@ -74,6 +74,7 @@ export default class RenderSystem extends System {
 
     ctx.save()
     ctx.translate(position.x, position.y)
+    ctx.globalAlpha = paint.opacity
 
     if (paint.animation) {
       this.handleAnimation(entity, ctx, paint, position, bound)

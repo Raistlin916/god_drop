@@ -1,13 +1,13 @@
 import Component from 'engine/Component'
 
-export interface ImageRenderOptions {
+interface ImageRenderOptions {
   sx: number;
   sy: number;
   sw: number;
   sh: number;
 }
 
-export interface RectRenderOptions {
+interface RectRenderOptions {
   color: string;
 }
 
@@ -20,6 +20,7 @@ export default class Paint extends Component {
   public animationCount: number = 0;
   public animationDuration: number = 60;
   public state: string;
+  public opacity: number = 1;
 
   constructor(src: string, public renderOptions?: RenderOptions) {
     super()

@@ -20,15 +20,25 @@ export default class CollisionSystem extends System {
     if (!this.tagManager.is(entity, 'player')) {
       return
     }
+    const player = entity
     this.tagManager.getByTag('item').forEach((item: Entity) => {
       if (!this.rigidBodyMapper.get(item)) {
         return
       }
-      if (this.overlap(item, entity)) {
-        this.payloadMapper.get(entity).data.score += this.payloadMapper.get(item).data.bonus
+      if (this.overlap(item, player)) {
+        const playerPayload = this.payloadMapper.get(player).data
+        const itemPayload = this.payloadMapper.get(item).data
+
+        playerPayload.score += itemPayload.bonus
+        if (playerPayload.catched[itemPayload.type]) {
+          playerPayload.catched[itemPayload.type] ++
+        } else {
+          playerPayload.catched[itemPayload.type] = 1
+        }
+
         const editor = new EntityEditor(item, this.world)
-        editor.removeComponent(RigidBody, item)
-          .removeComponent(Gravity, item)
+        editor.removeComponent(RigidBody)
+          .removeComponent(Gravity)
           .setComponent(Physical, {
             vx: 0,
             vy: -5

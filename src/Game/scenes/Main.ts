@@ -5,8 +5,11 @@ import EntityEditor from 'engine/EntityEditor'
 import { Payload, Position, Bound, Paint, Physical } from '../components/index'
 import entityFactory from '../entityFactory'
 import Input from '../Input'
+import Statistics from './Statistics'
 
 export default class Main extends Scene {
+  private scoreText: UIText;
+  private countDownText: UIText;
   private input: Input = new Input()
   private pot: Entity
   private itemSpawner: Entity
@@ -14,22 +17,22 @@ export default class Main extends Scene {
   private section: number
 
   public init(): void {
+    entityFactory.createYellowBg(this.world)
     this.bg = entityFactory.createBackground(this.world)
-    // this.startSection1()
-    this.startStatistics()
+    this.pot = entityFactory.createPot(this.world)
+    this.startSection1()
+    // this.startStatistics()
   }
 
   startSection1(): void {
     this.section = 1
-    const { world } = this
+    const { world, pot } = this
 
-    const pot = entityFactory.createPot(world)
-    this.pot = pot
     this.input.on('click', e => {
       const position: Position = this.world.getComponent(Position, pot)
       const bound: Bound = this.world.getComponent(Bound, pot)
 
-      if (bound.isIn(position, e)) {
+      if (bound && bound.isIn(position, e)) {
         this.startSection2()
       }
     })
@@ -53,7 +56,7 @@ export default class Main extends Scene {
     const player = entityFactory.createGod(world)
     world.getTagManager().addTag('player', player)
 
-    const scoreText = new UIText('', {
+    this.scoreText = new UIText('', {
       fillStyle: '#eee',
       fontSize: 24,
       textAlign: 'center',
@@ -61,18 +64,55 @@ export default class Main extends Scene {
       x: 20,
       y: 40
     })
-    world.addUI(scoreText)
-    world.eventBus.on('processEnd', () => {
-      scoreText.text = this.world.getComponent(Payload, player).data.score
+    world.addUI(this.scoreText)
+    const removeEvent = world.eventBus.on('processEnd', () => {
+      this.scoreText.text = this.world.getComponent(Payload, player).data.score
+      if (this.section !== 2) {
+        removeEvent()
+      }
     })
   }
 
   startStatistics(): void {
+    this.section = 3
     const { world } = this
     const editor = new EntityEditor(this.bg, world)
-    editor.add(new Physical(0, -4))
+    editor.setComponent(Physical, {
+      vx: 0,
+      vy: -4
+    })
 
-    entityFactory.createYellowBg(world)
+    const potEditor = new EntityEditor(this.pot, world)
+    potEditor.setComponent(Paint, {
+      animation: 'fadeOut',
+      animationCount: 0,
+      animationDuration: 30
+    })
+
+    const removeAnimationEvent = this.world.eventBus.on('animationEnd', (entity: Entity) => {
+      if (entity === this.pot) {
+        this.world.getEntityManager().remove(this.pot)
+        removeAnimationEvent()
+      }
+    })
+    world.removeUI(this.countDownText)
+    world.removeUI(this.scoreText)
+
+    const removeEvent = this.world.eventBus.on('processEnd', () => {
+      if (this.world.getComponent(Position, this.bg).y +
+      this.world.getComponent(Bound, this.bg).height() <= 150) {
+        editor.setComponent(Physical, {
+          vx: 0,
+          vy: 0
+        })
+        removeEvent()
+
+        const statistics = new Statistics(this.world)
+        this.pause()
+        statistics.init()
+        statistics.start()
+      }
+    })
   }
 
   initCountDown(): void {
@@ -86,21 +126,28 @@ export default class Main extends Scene {
       x: canvas.width / 2,
       y: 100
     })
+    this.countDownText = countDownText
     world.addUI(countDownText)
     const removeEvent = world.eventBus.on('processBegin', () => {
-      const countDown = 5 - Math.floor((world.totalFrames - startAt) / 60)
+      const countDown = 10 - Math.floor((world.totalFrames - startAt) / 60)
       countDownText.text = countDown
       if (countDown === 0) {
+        removeEvent()
         this.world.getEntityManager().remove(this.itemSpawner)
         countDownText.text = '时间到!'
         countDownText.textOption.fontSize = 30
 
-        const editor = new EntityEditor(this.pot, world)
-        editor.setComponent(Paint, {
+        const potEditor = new EntityEditor(this.pot, world)
+        potEditor.setComponent(Paint, {
           animation: null
         })
 
-        removeEvent()
+        const removeCheckEvent = this.world.eventBus.on('processEnd', () => {
+          if (this.world.getTagManager().getByTag('item').length === 0) {
+            this.startStatistics()
+            removeCheckEvent()
+          }
+        })
       }
     })
   }
