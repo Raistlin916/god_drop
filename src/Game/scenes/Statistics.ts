@@ -18,7 +18,7 @@ export default class Statistics extends Scene {
       })
 
     const catched = world.getComponent(Payload, this.player).data.catched
-    // const catched = { bomb: 3, gold: 4, lucky: 5 }
+    // const catched = { bomb: 30, gold: 40, lucky: 5 }
     const entities = []
     let yCoord = 80
 
@@ -33,20 +33,23 @@ export default class Statistics extends Scene {
     world.addUI(scoreText)
     yCoord += 30
 
+    const rowWidth = canvas.width - 40
     Object.keys(catched).forEach((key, keyIndex) => {
-      for (let i = 0; i < catched[key]; i ++) {
+      const length = catched[key]
+      const itemLength = Math.min(rowWidth / length, 20)
+      for (let i = 0; i < length; i ++) {
         const itemEntity = entityFactory.createItem(world, key)
         entities.push(itemEntity)
         const itemBound = world.getComponent(Bound, itemEntity)
         const editor = new EntityEditor(itemEntity, this.world)
         editor.setComponent(Position, {
-          x: i * 20 + 30,
+          x: i * itemLength + 10,
           y: yCoord
         }).setComponent(Paint, {
           opacity: 0
         })
 
-        if (i === catched[key] - 1) {
+        if (i === length - 1) {
           yCoord += itemBound.height() + 10
         }
       }

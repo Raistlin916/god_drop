@@ -8,18 +8,22 @@ import Input from '../Input'
 import Statistics from './Statistics'
 
 export default class Main extends Scene {
-  private scoreText: UIText;
-  private countDownText: UIText;
+  private scoreText: UIText
+  private countDownText: UIText
   private input: Input = new Input()
   private pot: Entity
+  private player: Entity
   private itemSpawner: Entity
   private bg: Entity
   private section: number
 
   public init(): void {
-    entityFactory.createYellowBg(this.world)
-    this.bg = entityFactory.createBackground(this.world)
-    this.pot = entityFactory.createPot(this.world)
+    const { world } = this
+    entityFactory.createYellowBg(world)
+    this.bg = entityFactory.createBackground(world)
+    this.pot = entityFactory.createPot(world)
+    this.player = entityFactory.createGod(world)
+    world.getTagManager().addTag('player', this.player)
     this.startSection1()
     // this.startStatistics()
   }
@@ -53,8 +57,6 @@ export default class Main extends Scene {
     })
 
     this.itemSpawner = entityFactory.createMassItemsSpawner(world)
-    const player = entityFactory.createGod(world)
-    world.getTagManager().addTag('player', player)
 
     this.scoreText = new UIText('', {
       fillStyle: '#eee',
@@ -66,7 +68,7 @@ export default class Main extends Scene {
     })
     world.addUI(this.scoreText)
     const removeEvent = world.eventBus.on('processEnd', () => {
-      this.scoreText.text = this.world.getComponent(Payload, player).data.score
+      this.scoreText.text = this.world.getComponent(Payload, this.player).data.score
       if (this.section !== 2) {
         removeEvent()
       }
