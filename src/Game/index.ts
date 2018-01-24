@@ -26,7 +26,8 @@ export default class Game {
       .addSystem(new RenderSystem(ctx))
 
     world.loadScenes([
-      MainScene, StatisicsScene
+      MainScene,
+      StatisicsScene
     ])
     world.startScene()
   }

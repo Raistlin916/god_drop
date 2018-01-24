@@ -6,6 +6,8 @@ import { Payload, Position, Bound, Paint, Physical } from '../components/index'
 import entityFactory from '../entityFactory'
 import Input from '../Input'
 
+const COUNTDOWN = 1
+
 export default class Main extends Scene {
   private scoreText: UIText
   private countDownText: UIText
@@ -24,7 +26,6 @@ export default class Main extends Scene {
     this.player = entityFactory.createGod(world)
     world.getTagManager().addTag('player', this.player)
     this.startSection1()
-    // this.startStatistics()
   }
 
   startSection1(): void {
@@ -127,7 +128,7 @@ export default class Main extends Scene {
     this.countDownText = countDownText
     world.addUI(countDownText)
     const removeEvent = world.eventBus.on('processBegin', () => {
-      const countDown = 10 - Math.floor((world.totalFrames - startAt) / 60)
+      const countDown = COUNTDOWN - Math.floor((world.totalFrames - startAt) / 60)
       countDownText.text = countDown
       if (countDown === 0) {
         removeEvent()

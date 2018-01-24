@@ -115,6 +115,14 @@ const instance = {
       .add(new Bound(256, 238.5))
       .add(new Position(canvas.width / 2 - 128, 200))
       .getEntity()
+  },
+
+  createPlayAgainBtn(world: World, pos: Position): Entity {
+    return world.createEntity()
+      .add(new Paint('imgs/playagain.png'))
+      .add(new Bound(64, 64))
+      .add(pos)
+      .getEntity()
   }
 }
 

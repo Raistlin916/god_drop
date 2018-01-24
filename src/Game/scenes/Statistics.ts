@@ -67,11 +67,21 @@ export default class Statistics extends Scene {
       }, index * 100)
     })
 
+    let againBtn = null
+    setTimeout(() => {
+      againBtn = entityFactory.createPlayAgainBtn(world, new Position(canvas.width / 2 - 32, yCoord + 40))
+    }, entities.length * 100 + 200)
+
     const input = new Input()
-    const removeClickEvent = input.on('click', () => {
-      world.removeUI(scoreText)
-      world.nextScene()
-      removeClickEvent()
+    const removeClickEvent = input.on('click', (e) => {
+      const position: Position = this.world.getComponent(Position, againBtn)
+      const bound: Bound = this.world.getComponent(Bound, againBtn)
+
+      if (bound && bound.isIn(position, e)) {
+        world.removeUI(scoreText)
+        world.nextScene()
+        removeClickEvent()
+      }
     })
 
   }
