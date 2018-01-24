@@ -3,7 +3,7 @@ import Entity from 'engine/Entity'
 import EntityEditor from 'engine/EntityEditor'
 import UIText from 'engine/UI/Text'
 import { PlayerController, Physical, Payload, Position, Bound, Paint } from '../components/index'
-import entityFactory, { bonusMap } from '../entityFactory'
+import entityFactory from '../entityFactory'
 import Input from '../Input'
 
 export default class Statistics extends Scene {
@@ -35,7 +35,7 @@ export default class Statistics extends Scene {
     yCoord += 30
 
     const rowWidth = canvas.width - 40
-    Object.keys(catched).forEach((key, keyIndex) => {
+    Object.keys(catched).forEach((key) => {
       const length = catched[key]
       const itemLength = Math.min(rowWidth / length, 20)
       for (let i = 0; i < length; i ++) {

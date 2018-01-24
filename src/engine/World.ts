@@ -18,7 +18,7 @@ export default class World {
   private UIs: UI[] = [];
   private entityBundle: EntityBundle = {};
   private entityManager: EntityManager = new EntityManager(this);
-  private componentManager: ComponentManager = new ComponentManager(this);
+  private componentManager: ComponentManager = new ComponentManager();
   private tagManager: TagManager = new TagManager();
   public totalFrames: number = 0;
   public eventBus: EventEmitter = new EventEmitter();

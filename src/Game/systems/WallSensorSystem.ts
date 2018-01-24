@@ -9,8 +9,6 @@ import WallSensor from '../components/WallSensor'
 
 export default class WallSensorSystem extends System {
   private positionMapper: ComponentMapper<Position>
-  private boundMapper: ComponentMapper<Bound>
-  private wallSensorMapper: ComponentMapper<WallSensor>
   private renderSystem: RenderSystem;
 
   constructor() {
@@ -19,8 +17,6 @@ export default class WallSensorSystem extends System {
 
   process(entity: Entity): void {
     const position = this.positionMapper.get(entity)
-    const bound = this.boundMapper.get(entity)
-    const wallSensor = this.wallSensorMapper.get(entity)
     const screenSize = this.renderSystem.getSize()
 
     if (position.y > screenSize.y2) {

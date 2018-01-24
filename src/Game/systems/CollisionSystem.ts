@@ -7,7 +7,6 @@ import { Bound, Position, Physical, Payload, RigidBody, Gravity, Paint } from '.
 
 export default class CollisionSystem extends System {
   private positionMapper: ComponentMapper<Position>
-  private physicalMapper: ComponentMapper<Physical>
   private boundMapper: ComponentMapper<Bound>
   private payloadMapper: ComponentMapper<Payload>
   private rigidBodyMapper: ComponentMapper<RigidBody>

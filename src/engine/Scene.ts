@@ -1,5 +1,4 @@
-import World, { EntityBundle } from 'engine/World'
-import Component, { Components } from 'engine/Component'
+import World, { EntityBundle } from 'engine/World';
 import Entity from 'engine/Entity';
 import EntityEditor from 'engine/EntityEditor';
 

@@ -1,9 +1,8 @@
 import World from 'engine/World'
 import Entity from 'engine/Entity'
-import EntityEditor from 'engine/EntityEditor'
 import math from 'engine/utils/math'
 import Scene from 'engine/Scene'
-import { Position, Paint, Bound, Physical, WallSensor, Spawner, Payload, PlayerController, Gravity, RigidBody } from './components/index'
+import { Position, Paint, Bound, Physical, WallSensor, Spawner, Payload, PlayerController, RigidBody } from './components/index'
 
 export const bonusMap = {
   gold: 2,

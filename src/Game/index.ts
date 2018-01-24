@@ -1,4 +1,4 @@
-import Component, { Components } from 'engine/Component'
+import { Components } from 'engine/Component'
 import World from 'engine/World'
 import * as com from './components/index'
 import RenderSystem from './systems/RenderSystem'

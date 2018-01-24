@@ -1,4 +1,3 @@
-import World from './World'
 import Component from './Component'
 import ComponentMapper from './ComponentMapper'
 import Entity from './Entity'
@@ -6,12 +5,7 @@ import Entity from './Entity'
 type ComponentMappers = {[key: string]: ComponentMapper<any>}
 
 export default class ComponentManager {
-  private world: World;
   private componentMappers: ComponentMappers = {};
-
-  constructor(world: World) {
-    this.world = world
-  }
 
   public create<T extends Component>(component: T, entity: Entity): void {
     let cm: ComponentMapper<T> = this.componentMappers[component.className]

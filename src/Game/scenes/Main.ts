@@ -29,7 +29,7 @@ export default class Main extends Scene {
 
   startSection1(): void {
     this.section = 1
-    const { world, pot } = this
+    const { pot } = this
 
     this.input.on('click', e => {
       const position: Position = this.world.getComponent(Position, pot)
