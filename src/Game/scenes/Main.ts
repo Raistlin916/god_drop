@@ -5,7 +5,6 @@ import EntityEditor from 'engine/EntityEditor'
 import { Payload, Position, Bound, Paint, Physical } from '../components/index'
 import entityFactory from '../entityFactory'
 import Input from '../Input'
-import Statistics from './Statistics'
 
 export default class Main extends Scene {
   private scoreText: UIText
@@ -109,10 +108,7 @@ export default class Main extends Scene {
         })
         removeEvent()
 
-        const statistics = new Statistics(this.world)
-        this.pause()
-        statistics.init()
-        statistics.start()
+        world.nextScene()
       }
     })
   }

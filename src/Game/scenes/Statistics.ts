@@ -4,6 +4,7 @@ import EntityEditor from 'engine/EntityEditor'
 import UIText from 'engine/UI/Text'
 import { PlayerController, Physical, Payload, Position, Bound, Paint } from '../components/index'
 import entityFactory, { bonusMap } from '../entityFactory'
+import Input from '../Input'
 
 export default class Statistics extends Scene {
   private player: Entity
@@ -65,5 +66,13 @@ export default class Statistics extends Scene {
         scoreText.text = Number(scoreText.text) + world.getComponent(Payload, entity).data.bonus
       }, index * 100)
     })
+
+    const input = new Input()
+    const removeClickEvent = input.on('click', () => {
+      world.removeUI(scoreText)
+      world.nextScene()
+      removeClickEvent()
+    })
+
   }
 }

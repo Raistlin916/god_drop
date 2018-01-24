@@ -7,8 +7,11 @@ import TagManager from './TagManager'
 import ComponentManager from './ComponentManager'
 import Component, { Components } from './Component'
 import EventEmitter from './utils/EventEmitter'
+import Scene from 'src/engine/Scene';
 
 export default class World {
+  private scenes: Scene[];
+  private sceneIndex: number;
   private systems: System[] = [];
   private UIs: UI[] = [];
   private entityManager: EntityManager = new EntityManager(this);
@@ -77,16 +80,40 @@ export default class World {
     this.UIs = this.UIs.filter(u => u !== ui)
   }
 
-  public importComponents(components: Components) {
+  public importComponents(components: Components): void {
     for(let key in components) {
       this.componentManager.createMapper(components[key])
     }
   }
 
-  public clean() {
+  public clean(): void {
     this.UIs = []
     this.entityManager.clean()
     this.componentManager.clean()
     this.tagManager.clean()
+  }
+
+  public loadScenes(scenesClass: [new (world) => Scene]): void {
+    this.scenes = scenesClass.map(c => new c(this))
+  }
+
+  public startScene():void {
+    this.sceneIndex = 0
+    const scene = this.scenes[this.sceneIndex]
+    scene.init()
+    scene.start()
+  }
+
+  public nextScene(): void {
+    const current = this.scenes[this.sceneIndex]
+    current.pause()
+
+    this.sceneIndex ++
+    if (this.sceneIndex === this.scenes.length) {
+      this.sceneIndex = 0
+    }
+    const scene = this.scenes[this.sceneIndex]
+    scene.init()
+    scene.start()
   }
 }
