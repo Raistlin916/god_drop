@@ -2,6 +2,7 @@ import World from 'engine/World'
 import Entity from 'engine/Entity'
 import EntityEditor from 'engine/EntityEditor'
 import math from 'engine/utils/math'
+import Scene from 'engine/Scene'
 import { Position, Paint, Bound, Physical, WallSensor, Spawner, Payload, PlayerController, Gravity, RigidBody } from './components/index'
 
 export const bonusMap = {
@@ -27,8 +28,8 @@ const instance = {
       }))
       .getEntity()
   },
-  createItem(world: World, customType?: string): Entity {
-    const entityEditor = world.createEntity()
+  createItem(scene: Scene, customType?: string): Entity {
+    const entityEditor = scene.createEntity()
       .add(new Position(canvas.width / 2, canvas.height / 2))
       .add(new Physical(0, 0))
       .add(new RigidBody())
@@ -89,7 +90,7 @@ const instance = {
       .getEntity()
   },
 
-  createYellowBg(world: World): Entity {
+  createDeeperBg(world: World): Entity {
     return world.createEntity()
       .add(new Paint('rect', {
         color: '#f8e879'
@@ -99,8 +100,8 @@ const instance = {
       .getEntity()
   },
 
-  createMassItemsSpawner(world: World): Entity {
-    return world.createEntity()
+  createMassItemsSpawner(scene: Scene): Entity {
+    return scene.createEntity()
       .add(new Spawner('massItem', {
         minCooldown: 2,
         maxCooldown: 5,
@@ -109,16 +110,16 @@ const instance = {
       .getEntity()
   },
 
-  createPot(world: World): Entity {
-    return world.createEntity()
+  createPot(scene: Scene): Entity {
+    return scene.createEntity()
       .add(new Paint('imgs/pot.png'))
       .add(new Bound(256, 238.5))
       .add(new Position(canvas.width / 2 - 128, 200))
       .getEntity()
   },
 
-  createPlayAgainBtn(world: World, pos: Position): Entity {
-    return world.createEntity()
+  createPlayAgainBtn(scene: Scene, pos: Position): Entity {
+    return scene.createEntity()
       .add(new Paint('imgs/playagain.png'))
       .add(new Bound(64, 64))
       .add(pos)

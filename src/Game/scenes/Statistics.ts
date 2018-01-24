@@ -39,7 +39,7 @@ export default class Statistics extends Scene {
       const length = catched[key]
       const itemLength = Math.min(rowWidth / length, 20)
       for (let i = 0; i < length; i ++) {
-        const itemEntity = entityFactory.createItem(world, key)
+        const itemEntity = entityFactory.createItem(this, key)
         entities.push(itemEntity)
         const itemBound = world.getComponent(Bound, itemEntity)
         const editor = new EntityEditor(itemEntity, this.world)
@@ -69,7 +69,7 @@ export default class Statistics extends Scene {
 
     let againBtn = null
     setTimeout(() => {
-      againBtn = entityFactory.createPlayAgainBtn(world, new Position(canvas.width / 2 - 32, yCoord + 40))
+      againBtn = entityFactory.createPlayAgainBtn(this, new Position(canvas.width / 2 - 32, yCoord + 40))
     }, entities.length * 100 + 200)
 
     const input = new Input()
@@ -79,6 +79,7 @@ export default class Statistics extends Scene {
 
       if (bound && bound.isIn(position, e)) {
         world.removeUI(scoreText)
+        world.getEntityManager().remove(againBtn)
         world.nextScene()
         removeClickEvent()
       }

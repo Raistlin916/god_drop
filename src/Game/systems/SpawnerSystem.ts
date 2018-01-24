@@ -20,7 +20,7 @@ export default class SpawnerSystem extends System {
     spawner.cooldown -= 1
     if (spawner.cooldown <= 0) {
       spawner.cooldown = math.getRandomInt(spawner.minCooldown, spawner.maxCooldown)
-      const item = entityFactory.createItem(this.world)
+      const item = entityFactory.createItem(this.world.getCurrentScene())
       this.tagManager.addTag('item', item)
 
       if (spawner.type === 'massItem') {

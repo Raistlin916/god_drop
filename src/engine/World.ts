@@ -7,13 +7,16 @@ import TagManager from './TagManager'
 import ComponentManager from './ComponentManager'
 import Component, { Components } from './Component'
 import EventEmitter from './utils/EventEmitter'
-import Scene from 'src/engine/Scene';
+import Scene from './Scene'
+
+export type EntityBundle = { [key: string]: Entity }
 
 export default class World {
   private scenes: Scene[];
   private sceneIndex: number;
   private systems: System[] = [];
   private UIs: UI[] = [];
+  private entityBundle: EntityBundle = {};
   private entityManager: EntityManager = new EntityManager(this);
   private componentManager: ComponentManager = new ComponentManager(this);
   private tagManager: TagManager = new TagManager();
@@ -93,19 +96,25 @@ export default class World {
     this.tagManager.clean()
   }
 
-  public loadScenes(scenesClass: [new (world) => Scene]): void {
+  public loadScenes(scenesClass: [new (world) => Scene], bundle: EntityBundle): void {
     this.scenes = scenesClass.map(c => new c(this))
+    this.entityBundle = bundle
+  }
+
+  public getCurrentScene(): Scene {
+    return this.scenes[this.sceneIndex]
   }
 
   public startScene():void {
     this.sceneIndex = 0
-    const scene = this.scenes[this.sceneIndex]
-    scene.init()
+    const scene = this.getCurrentScene()
+    scene.init(this.entityBundle)
     scene.start()
   }
 
   public nextScene(): void {
     const current = this.scenes[this.sceneIndex]
+    current.cleanEntities()
     current.pause()
 
     this.sceneIndex ++
@@ -113,7 +122,7 @@ export default class World {
       this.sceneIndex = 0
     }
     const scene = this.scenes[this.sceneIndex]
-    scene.init()
+    scene.init(this.entityBundle)
     scene.start()
   }
 }

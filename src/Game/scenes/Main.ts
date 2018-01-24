@@ -1,6 +1,7 @@
 import Scene from 'engine/Scene'
 import Entity from 'engine/Entity'
 import UIText from 'engine/UI/Text'
+import { EntityBundle } from 'engine/World'
 import EntityEditor from 'engine/EntityEditor'
 import { Payload, Position, Bound, Paint, Physical } from '../components/index'
 import entityFactory from '../entityFactory'
@@ -18,13 +19,11 @@ export default class Main extends Scene {
   private bg: Entity
   private section: number
 
-  public init(): void {
-    const { world } = this
-    entityFactory.createYellowBg(world)
-    this.bg = entityFactory.createBackground(world)
-    this.pot = entityFactory.createPot(world)
-    this.player = entityFactory.createGod(world)
-    world.getTagManager().addTag('player', this.player)
+  public init(entityBundle: EntityBundle): void {
+    this.pot = entityFactory.createPot(this)
+    this.bg = entityBundle.bg
+    this.player = entityBundle.player
+
     this.startSection1()
   }
 
@@ -56,7 +55,7 @@ export default class Main extends Scene {
       animationDuration: Infinity
     })
 
-    this.itemSpawner = entityFactory.createMassItemsSpawner(world)
+    this.itemSpawner = entityFactory.createMassItemsSpawner(this)
 
     this.scoreText = new UIText('', {
       fillStyle: '#eee',
