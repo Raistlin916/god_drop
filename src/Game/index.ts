@@ -7,6 +7,7 @@ import WallSensorSystem from './systems/WallSensorSystem'
 import SpawnerSystem from './systems/SpawnerSystem'
 import PlayerControllerSystem from './systems/PlayerControllerSystem'
 import CollisionSystem from './systems/CollisionSystem'
+import StartScene from './scenes/Start'
 import MainScene from './scenes/Main'
 import StatisicsScene from './scenes/Statistics'
 import entityFactory from './entityFactory'
@@ -32,6 +33,7 @@ export default class Game {
     world.getTagManager().addTag('player', player)
 
     world.loadScenes([
+      StartScene,
       MainScene,
       StatisicsScene
     ], {

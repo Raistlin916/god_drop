@@ -99,6 +99,18 @@ const instance = {
       .getEntity()
   },
 
+  createMask(scene: Scene): Entity {
+    return scene.createEntity()
+      .add(new Paint('rect', {
+        color: '#111'
+      }, {
+        opacity: 0.5
+      }))
+      .add(new Position(0, 0))
+      .add(new Bound(canvas.width, canvas.height))
+      .getEntity()
+  },
+
   createMassItemsSpawner(scene: Scene): Entity {
     return scene.createEntity()
       .add(new Spawner('massItem', {
@@ -122,6 +134,22 @@ const instance = {
       .add(new Paint('imgs/playagain.png'))
       .add(new Bound(64, 64))
       .add(pos)
+      .getEntity()
+  },
+
+  createTitle(scene: Scene): Entity {
+    return scene.createEntity()
+      .add(new Paint('imgs/title.png'))
+      .add(new Bound(162.5, 50.5))
+      .add(new Position(canvas.width / 2 - 81, 100))
+      .getEntity()
+  },
+
+  createStartBtn(scene: Scene): Entity {
+    return scene.createEntity()
+      .add(new Paint('imgs/startBtn.png'))
+      .add(new Bound(152,  52))
+      .add(new Position(canvas.width / 2 - 76, canvas.height - 200))
       .getEntity()
   }
 }
