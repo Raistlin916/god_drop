@@ -3,7 +3,7 @@ import Entity from 'engine/Entity'
 import UIText from 'engine/UI/Text'
 import { EntityBundle } from 'engine/World'
 import EntityEditor from 'engine/EntityEditor'
-import { Payload, Position, Bound, Paint, Physical } from '../components/index'
+import { Payload, Position, Bound, Paint, Physical, PlayerController } from '../components/index'
 import entityFactory from '../entityFactory'
 import Input from '../Input'
 
@@ -24,12 +24,15 @@ export default class Main extends Scene {
     this.bg = entityBundle.bg
     this.player = entityBundle.player
 
+    const editor = new EntityEditor(this.player, this.world)
+    editor.add(new PlayerController())
+
     this.startSection1()
   }
 
   startSection1(): void {
     this.section = 1
-    const { pot } = this
+    const { pot, bg } = this
 
     this.input.on('click', e => {
       const position: Position = this.world.getComponent(Position, pot)
@@ -39,6 +42,27 @@ export default class Main extends Scene {
         this.startSection2()
       }
     })
+
+    if (this.world.getComponent(Position, bg).y < 0) {
+      const editor = new EntityEditor(bg, this.world)
+      editor.setComponent(Physical, {
+        vx: 0,
+        vy: 10
+      })
+
+      const removeEvent = this.world.eventBus.on('processBegin', () => {
+        if (this.world.getComponent(Position, this.bg).y + 10 >= 0) {
+          editor.setComponent(Physical, {
+            vx: 0,
+            vy: 0
+          }).setComponent(Position, {
+            x: 0,
+            y: 0
+          })
+          removeEvent()
+        }
+      })
+    }
   }
 
   startSection2(): void {
