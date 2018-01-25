@@ -23,6 +23,15 @@ export default class SpawnerSystem extends System {
       const item = entityFactory.createItem(this.world.getCurrentScene())
       this.tagManager.addTag('item', item)
 
+      const editor = new EntityEditor(item, this.world)
+      editor.setComponent(Position, {
+        x: math.getRandom(10, canvas.width - 30),
+        y: -50
+      }).setComponent(Physical, {
+        vx: 0,
+        vy: 10
+      })
+
       if (spawner.type === 'massItem') {
         const editor = new EntityEditor(item, this.world)
         editor.setComponent(Position, {

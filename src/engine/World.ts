@@ -114,7 +114,7 @@ export default class World {
 
   public nextScene(sceneIndex?: number): void {
     const current = this.scenes[this.sceneIndex]
-    current.cleanEntities()
+    current.clean()
     current.pause()
 
     if (sceneIndex === undefined) {

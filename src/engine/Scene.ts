@@ -1,10 +1,12 @@
-import World, { EntityBundle } from 'engine/World';
-import Entity from 'engine/Entity';
-import EntityEditor from 'engine/EntityEditor';
+import World, { EntityBundle } from './World';
+import Entity from './Entity';
+import UI from './UI/UI';
+import EntityEditor from './EntityEditor';
 
 export default abstract class Scene {
   protected world: World
   private entities: Entity[] = []
+  private UIs: UI[] = []
   private running: Boolean = false
 
   constructor(world: World) {
@@ -34,20 +36,25 @@ export default abstract class Scene {
 
   public createEntity(): EntityEditor {
     const entityEditor = this.world.createEntity()
-    this.bindEntity(
-      entityEditor.getEntity()
-    )
+    const entity = entityEditor.getEntity()
+    if (this.entities.indexOf(entity) === -1) {
+      this.entities.push(entity)
+    }
     return entityEditor
   }
 
-  public cleanEntities(): void {
+  public clean(): void {
     const manager = this.world.getEntityManager()
     this.entities.forEach(entity => manager.remove(entity))
+    this.entities = []
+    this.UIs.forEach(ui => this.world.removeUI(ui))
+    this.UIs = []
   }
 
-  public bindEntity(entity: Entity): void {
-    if (this.entities.indexOf(entity) === -1) {
-      this.entities.push(entity)
+  public addUI(ui: UI): void {
+    this.world.addUI(ui)
+    if (this.UIs.indexOf(ui) === -1) {
+      this.UIs.push(ui)
     }
   }
 }

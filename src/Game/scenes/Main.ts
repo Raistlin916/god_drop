@@ -3,24 +3,20 @@ import Entity from 'engine/Entity'
 import UIText from 'engine/UI/Text'
 import { EntityBundle } from 'engine/World'
 import EntityEditor from 'engine/EntityEditor'
-import { Payload, Position, Bound, Paint, Physical, PlayerController } from '../components/index'
+import { Payload, Position, Bound, Physical, PlayerController } from '../components/index'
 import entityFactory from '../entityFactory'
-import Input from '../Input'
 
 const COUNTDOWN = 1
 
 export default class Main extends Scene {
   private scoreText: UIText
   private countDownText: UIText
-  private input: Input = new Input()
-  private pot: Entity
+  private spawners: Entity[] = []
   private player: Entity
-  private itemSpawner: Entity
   private bg: Entity
   private section: number
 
   public init(entityBundle: EntityBundle): void {
-    this.pot = entityFactory.createPot(this)
     this.bg = entityBundle.bg
     this.player = entityBundle.player
 
@@ -32,37 +28,33 @@ export default class Main extends Scene {
 
   startSection1(): void {
     this.section = 1
-    const { pot, bg } = this
+    const { bg } = this
 
-    this.input.on('click', e => {
-      const position: Position = this.world.getComponent(Position, pot)
-      const bound: Bound = this.world.getComponent(Bound, pot)
+    const editor = new EntityEditor(bg, this.world)
+    editor.setComponent(Physical, {
+      vx: 0,
+      vy: 10
+    })
 
-      if (bound && bound.isIn(position, e)) {
-        this.startSection2()
+    const removeEvent = this.world.eventBus.on('processBegin', () => {
+      if (this.world.getComponent(Position, this.bg).y + 10 >= 0) {
+        editor.setComponent(Physical, {
+          vx: 0,
+          vy: 0
+        }).setComponent(Position, {
+          x: 0,
+          y: 0
+        })
+        removeEvent()
       }
     })
 
-    if (this.world.getComponent(Position, bg).y < 0) {
-      const editor = new EntityEditor(bg, this.world)
-      editor.setComponent(Physical, {
-        vx: 0,
-        vy: 10
-      })
-
-      const removeEvent = this.world.eventBus.on('processBegin', () => {
-        if (this.world.getComponent(Position, this.bg).y + 10 >= 0) {
-          editor.setComponent(Physical, {
-            vx: 0,
-            vy: 0
-          }).setComponent(Position, {
-            x: 0,
-            y: 0
-          })
-          removeEvent()
-        }
-      })
-    }
+    setTimeout(() => {
+      for(let i = 0; i < 7; i ++ ) {
+        this.spawners.push(entityFactory.createItemSpawner(this))
+      }
+      this.startSection2()
+    }, 1000)
   }
 
   startSection2(): void {
@@ -70,16 +62,16 @@ export default class Main extends Scene {
       return
     }
     this.section = 2
-    const { pot, world } = this
+    const { world } = this
     this.initCountDown()
 
-    const editor = new EntityEditor(pot, world)
-    editor.setComponent(Paint, {
-      animation: 'shake',
-      animationDuration: Infinity
-    })
+    // const editor = new EntityEditor(pot, world)
+    // editor.setComponent(Paint, {
+    //   animation: 'shake',
+    //   animationDuration: Infinity
+    // })
 
-    this.itemSpawner = entityFactory.createMassItemsSpawner(this)
+    // entityFactory.createMassItemsSpawner(this)
 
     this.scoreText = new UIText('', {
       fillStyle: '#eee',
@@ -104,22 +96,16 @@ export default class Main extends Scene {
     const editor = new EntityEditor(this.bg, world)
     editor.setComponent(Physical, {
       vx: 0,
-      vy: -4
+      vy: -6
     })
 
-    const potEditor = new EntityEditor(this.pot, world)
-    potEditor.setComponent(Paint, {
-      animation: 'fadeOut',
-      animationCount: 0,
-      animationDuration: 30
-    })
+    // const potEditor = new EntityEditor(this.pot, world)
+    // potEditor.setComponent(Paint, {
+    //   animation: 'fadeOut',
+    //   animationCount: 0,
+    //   animationDuration: 30
+    // })
 
-    const removeAnimationEvent = this.world.eventBus.on('animationEnd', (entity: Entity) => {
-      if (entity === this.pot) {
-        this.world.getEntityManager().remove(this.pot)
-        removeAnimationEvent()
-      }
-    })
     world.removeUI(this.countDownText)
     world.removeUI(this.scoreText)
 
@@ -155,14 +141,10 @@ export default class Main extends Scene {
       countDownText.text = countDown
       if (countDown === 0) {
         removeEvent()
-        this.world.getEntityManager().remove(this.itemSpawner)
         countDownText.text = '时间到!'
         countDownText.textOption.fontSize = 30
 
-        const potEditor = new EntityEditor(this.pot, world)
-        potEditor.setComponent(Paint, {
-          animation: null
-        })
+        this.spawners.forEach(spawner => this.world.getEntityManager().remove(spawner))
 
         const removeCheckEvent = this.world.eventBus.on('processEnd', () => {
           if (this.world.getTagManager().getByTag('item').length === 0) {

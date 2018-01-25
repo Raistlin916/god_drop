@@ -70,11 +70,11 @@ const instance = {
     return entityEditor.getEntity()
   },
 
-  createItemSpawner(world: World): Entity {
-    return world.createEntity()
+  createItemSpawner(scene: Scene): Entity {
+    return scene.createEntity()
       .add(new Spawner('item', {
         minCooldown: 30,
-        maxCooldown: 120,
+        maxCooldown: 300,
         initialCooldown: math.getRandomInt(0, 60) / 2
       }))
       .getEntity()
