@@ -86,7 +86,7 @@ export default class Main extends Scene {
       fontSize: 24,
       textAlign: 'center',
       fontFamily: 'Monaco',
-      x: 20,
+      x: 30,
       y: 40
     })
     world.addUI(this.scoreText)

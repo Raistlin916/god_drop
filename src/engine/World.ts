@@ -112,12 +112,17 @@ export default class World {
     scene.start()
   }
 
-  public nextScene(): void {
+  public nextScene(sceneIndex?: number): void {
     const current = this.scenes[this.sceneIndex]
     current.cleanEntities()
     current.pause()
 
-    this.sceneIndex ++
+    if (sceneIndex === undefined) {
+      this.sceneIndex++
+    } else {
+      this.sceneIndex = sceneIndex
+    }
+
     if (this.sceneIndex === this.scenes.length) {
       this.sceneIndex = 0
     }

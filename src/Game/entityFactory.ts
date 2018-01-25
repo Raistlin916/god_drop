@@ -124,8 +124,8 @@ const instance = {
   createPot(scene: Scene): Entity {
     return scene.createEntity()
       .add(new Paint('imgs/pot.png'))
-      .add(new Bound(256, 238.5))
-      .add(new Position(canvas.width / 2 - 128, 200))
+      .add(new Bound(204.8, 190.8))
+      .add(new Position(canvas.width / 2 - 104, canvas.height / 2 - 95))
       .getEntity()
   },
 

@@ -80,7 +80,7 @@ export default class Statistics extends Scene {
       if (bound && bound.isIn(position, e)) {
         world.removeUI(scoreText)
         world.getEntityManager().remove(againBtn)
-        world.nextScene()
+        world.nextScene(1)
         removeClickEvent()
       }
     })
