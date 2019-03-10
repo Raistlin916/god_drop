@@ -1,0 +1,23 @@
+{
+  "compilerOptions": {
+    "target": "es5",
+    "module": "esnext",
+    "sourceMap": false,
+    "outDir": "./build",
+    "baseUrl": ".",
+    "paths": {
+      "engine/*": [
+        "./src/engine/*"
+      ]
+    },
+    "lib": [
+      "es6",
+      "dom"
+    ],
+    "noUnusedLocals": true
+  },
+  "files": [
+    "./src/main.ts",
+    "./global.d.ts"
+  ]
+}
