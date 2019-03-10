@@ -3135,7 +3135,7 @@ var __extends = undefined && undefined.__extends || function () {
     };
 }();
 
-var COUNTDOWN = 1;
+var COUNTDOWN = 10;
 var Main = /** @class */function (_super) {
     __extends(Main, _super);
     function Main() {

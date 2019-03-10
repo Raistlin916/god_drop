@@ -7,7 +7,7 @@ import { Payload, Position, Bound, Paint, Physical, PlayerController } from '../
 import entityFactory from '../entityFactory'
 import Input from '../Input'
 
-const COUNTDOWN = 1
+const COUNTDOWN = 10
 
 export default class Main extends Scene {
   private scoreText: UIText
